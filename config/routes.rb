@@ -1,9 +1,21 @@
 Rails.application.routes.draw do
+  
+  devise_for :users
+  get "utility/show_api_key", to: "utility#show_api_key", as: "show_api_key"
+  post "utility/generate_api_key", to: "utility#generate_api_key", as: "generate_api_key"
+
+  namespace :api do
+    namespace :v1 do
+      resources :users
+      resources :sessions, only: [:create, :destroy]
+    end
+  end
+
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
   # You can have the root of your site routed with "root"
-  # root 'welcome#index'
+  root 'welcome#index'
 
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'
