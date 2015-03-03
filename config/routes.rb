@@ -7,7 +7,16 @@ Rails.application.routes.draw do
   namespace :api do
     namespace :v1 do
       resources :users
+      resources :friend_requests
       resources :sessions, only: [:create, :destroy]
+      resources :users do
+        member do
+          get :friend_request_sent
+          get :my_friend_requests
+          get :my_friends
+          delete :delete_friend
+        end
+      end
     end
   end
 

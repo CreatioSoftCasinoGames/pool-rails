@@ -20,17 +20,16 @@ class Api::V1::SessionsController < Api::V1::ApplicationController
 					@messages = "Guest user not present!"
 				end
 			else
-				# @messages = "Allready connected with facebook!"
 				@user = User.where(fb_id: params[:fb_id]).first
-				@user.attributes = {fb_friend_list: params[:fb_friend_list]}
+				@user.attributes = {fb_friends_list: params[:fb_friend_list]}
 			end
 		else
 			if params[:fb_id]
 				@user = User.where(fb_id: params[:fb_id]).first_or_initialize
-				# @user.attributes = {fb_friend_list: params[:fb_friend_list]}
+				@user.attributes = {fb_friends_list: params[:fb_friend_list]}
 				if @user.new_record?
 					email = params[:email].present? ? params[:email] : params[:fb_id]+"@facebook.com"
-					@user.attributes = {email: email, first_name: params[:first_name], last_name: params[:last_name]}
+					@user.attributes = {email: email, first_name: params[:first_name], last_name: params[:last_name], fb_friends_list: params[:fb_friend_list]}
 					if @user.save
 						@success = true
 						@new_user = true
@@ -61,13 +60,19 @@ class Api::V1::SessionsController < Api::V1::ApplicationController
 		end
 		if @user.present?
 			login_token = SecureRandom.hex(5)
-			if @user.update_attributes(login_token: login_token)
+			if @user.update_attributes(login_token: login_token, online: true, login_histories_attributes: {id: nil, active: true, login_token: login_token })
 				render json: @user
 			else
-				render json: @messages
+				render json: {
+					errors: @messages,
+					success: false
+				}
 			end
 		else
-			render json: @messages
+			render json: {
+				errors: @messages,
+				success: false
+			}
 		end
 	end
 
@@ -84,7 +89,8 @@ class Api::V1::SessionsController < Api::V1::ApplicationController
 				}
 			else
 				render json: {
-					error: @user.errors.full_messages.join(", ")
+					error: @user.errors.full_messages.join(", "),
+					success: false
 				}
 			end
 		else

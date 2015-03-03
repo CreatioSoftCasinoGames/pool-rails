@@ -1,6 +1,6 @@
 class Api::V1::UsersController < Api::V1::ApplicationController
 
-	before_action :find_user, only: [:show, :update]
+	before_action :find_user, only: [:show, :update, :my_friend_requests, :friend_request_sent, :my_friends]
 
 	def create
 		params[:password] = "temp1234" if params[:password].blank?
@@ -36,55 +36,28 @@ class Api::V1::UsersController < Api::V1::ApplicationController
 		end
 	end
 
-	# def friend_request_sent
-	# 	@friend_requests = @user.friend_requests.where(confirmed: false)
-	# 	render json: @friend_requests
-	# end
+	def friend_request_sent
+		render json: @user.friend_requests_sent.where(confirmed: false)
+	end
 
-	# def my_friend_requests
-	# 	user_id = @user.id
-	# 	@friend_requests = FriendRequest.where(requested_to_id: user_id, confirmed: false)
-	# 	render json: @friend_requests
-	# end
+	def my_friend_requests
+		render json: @user.unconfirmed_friend_requests.where(confirmed: false)
+	end
 
-	# def send_in_game_gift
-	# 	@in_game_gifts = InGameGift.all
-	# 	render json: @in_game_gifts
-	# end
+	def my_friends
+		render json: @user.friends.as_json({
+			only: [:login_token, :online],
+			methods: [:full_name, :image_url]
+		})
+	end
 
-	# def my_friends
-	# 	render json: @user.friends.as_json({
-	# 		only: [:login_token, :online, :device_avatar_id],
-	# 		methods: [:full_name, :image_url]
-	# 	})
-	# end
-
-	# def delete_friend
-	# 	@friend = Friendship.where(user_id: @user.id, friend_id: User.fetch_by_login_token(params[:friend_token])).first.delete
-	# 	@friend1 = Friendship.where(user_id: User.fetch_by_login_token(params[:friend_token]), friend_id: @user.id).first.delete
-	# 	render json: {
-	# 		success: true
-	# 	}
-	# end
-
-	# def gift_sent
-	# 	@sent_gift = @user.gift_requests.where(is_requested: false)
-	# 	render json: @sent_gift
-	# end
-
-	# def gift_received
-	# 	render json: @user.unconfirmed_gift_requests
-	# end
-
-	# def asked_for_gift_to
-	# 	@gift_asked_to = @user.gift_requests.where(is_requested: true)
-	# 	render json: @gift_asked_to
-	# end
-
-	# def asked_for_gift_by
-	# 	@gift_asked_by = @user.gift_requests.where(is_requested: true)
-	# 	render json: @gift_asked_by
-	# end
+	def delete_friend
+		@friend = Friendship.where(user_id: @user.id, friend_id: User.fetch_by_login_token(params[:friend_token])).first.delete
+		@friend1 = Friendship.where(user_id: User.fetch_by_login_token(params[:friend_token]), friend_id: @user.id).first.delete
+		render json: {
+			success: true
+		}
+	end
 	
 	def show
 		unless api_current_user.blank?

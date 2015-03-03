@@ -23,11 +23,8 @@ html lang="en"
         a.navbar-brand href="#"Pool
         .navbar-collapse.collapse.navbar-responsive-collapse.pull-right
           ul.nav.navbar-nav
-            / - if user_signed_in? 
-            / li= link_to "Rooms", rooms_path
             li= link_to "Api Key", show_api_key_path
-            / li= link_to "Logout", destroy_user_session_path, :method => :delete
-           / - else
+            li= link_to "Logout", destroy_user_session_path, :method => :delete
             li= link_to("Sign In", new_user_session_path)
 
     .container
