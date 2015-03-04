@@ -7,6 +7,10 @@ class Api::V1::ApplicationController < ApplicationController
 	  {root: false}
 	end
 
+	def api_current_user
+		User.fetch_by_login_token(params[:my_login_token])
+	end
+
 	private
 
 	def restrict_access

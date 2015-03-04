@@ -14,7 +14,7 @@ class User < ActiveRecord::Base
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
 
-  attr_accessor :fb_friends_list
+  attr_accessor :fb_friends_list, :is_friend, :is_requested
 
   accepts_nested_attributes_for :login_histories
 
@@ -22,6 +22,24 @@ class User < ActiveRecord::Base
     if login_token
       self.where(login_token: login_token).first || LoginHistory.where(login_token: login_token).first.user
     end
+  end
+
+  def player_since
+    created_at.strftime("%B,%Y")
+  end
+
+  def full_name
+    [first_name, last_name].join(" ")
+  end
+  
+  def image_url 
+    if fb_id
+      "http://graph.facebook.com/#{fb_id}/picture?height=200"
+    end
+  end
+
+  def num_friend_request
+    self.unconfirmed_friend_requests.where(requested_to_id: self.id, confirmed: false).count()
   end
 
   private

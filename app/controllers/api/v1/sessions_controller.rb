@@ -45,7 +45,7 @@ class Api::V1::SessionsController < Api::V1::ApplicationController
 					@success = !@user.blank?
 				else
 					if params[:is_guest] && params[:device_id]
-						@user = User.where(device_id: params[:device_id], is_guest: true).first_or_initialize
+						@user = User.where(device_id: params[:device_id], first_name: params[:first_name], last_name: params[:last_name], is_guest: true).first_or_initialize
 						if @user.new_record?
 							if @user.save
 								@success = true

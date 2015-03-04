@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150303060107) do
+ActiveRecord::Schema.define(version: 20150304075428) do
 
   create_table "api_keys", force: true do |t|
     t.string   "token"
@@ -44,12 +44,12 @@ ActiveRecord::Schema.define(version: 20150303060107) do
   end
 
   create_table "users", force: true do |t|
-    t.string   "email",                  default: "",    null: false
-    t.string   "encrypted_password",     default: "",    null: false
+    t.string   "email",                                            default: "",    null: false
+    t.string   "encrypted_password",                               default: "",    null: false
     t.string   "reset_password_token"
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
-    t.integer  "sign_in_count",          default: 0,     null: false
+    t.integer  "sign_in_count",                                    default: 0,     null: false
     t.datetime "current_sign_in_at"
     t.datetime "last_sign_in_at"
     t.string   "current_sign_in_ip"
@@ -61,8 +61,24 @@ ActiveRecord::Schema.define(version: 20150303060107) do
     t.string   "fb_id"
     t.string   "device_id"
     t.string   "login_token"
-    t.boolean  "is_guest",               default: false
-    t.boolean  "online",                 default: false
+    t.boolean  "is_guest",                                         default: false
+    t.boolean  "online",                                           default: false
+    t.integer  "won_count",                                        default: 0
+    t.integer  "lost_count",                                       default: 0
+    t.integer  "rank",                                             default: 0
+    t.decimal  "total_coins_won",         precision: 10, scale: 0, default: 0
+    t.decimal  "win_percentage",          precision: 10, scale: 0, default: 0
+    t.integer  "total_tournament_won",                             default: 0
+    t.integer  "total_tournament_played",                          default: 0
+    t.integer  "win_streak",                                       default: 0
+    t.decimal  "ball_potted",             precision: 10, scale: 0, default: 0
+    t.decimal  "accuracy",                precision: 10, scale: 0, default: 0
+    t.integer  "xp",                                               default: 0
+    t.integer  "current_level",                                    default: 1
+    t.string   "country"
+    t.string   "achievement"
+    t.decimal  "current_coins_balance",   precision: 10, scale: 0, default: 1000
+    t.boolean  "is_dummy",                                         default: false
   end
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree

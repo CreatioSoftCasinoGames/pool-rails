@@ -1,0 +1,28 @@
+class UserSerializer < ActiveModel::Serializer
+  attributes  :login_token,
+  						:email,
+  						:full_name,
+              :fb_id,
+  						:player_since,
+  						:num_friend_request,
+              :is_friend,
+              :is_requested,
+              :image_url,
+              :won_count,
+              :lost_count,
+              :rank,
+              :total_coins_won,
+              :win_percentage,
+              :total_tournament_won,
+              :total_tournament_played,
+              :win_streak,
+              :ball_potted,
+              :accuracy,
+              :xp,
+              :current_level,
+              :country,
+              :achievement,
+              :current_coins_balance,
+              :is_dummy
+              
+end
