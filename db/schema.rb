@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150304075428) do
+ActiveRecord::Schema.define(version: 20150304100902) do
 
   create_table "api_keys", force: true do |t|
     t.string   "token"
@@ -79,6 +79,7 @@ ActiveRecord::Schema.define(version: 20150304075428) do
     t.string   "achievement"
     t.decimal  "current_coins_balance",   precision: 10, scale: 0, default: 1000
     t.boolean  "is_dummy",                                         default: false
+    t.string   "device_avtar_id"
   end
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree

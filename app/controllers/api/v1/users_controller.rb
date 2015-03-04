@@ -3,7 +3,6 @@ class Api::V1::UsersController < Api::V1::ApplicationController
 	before_action :find_user, only: [:show, :update, :my_friend_requests, :friend_request_sent, :my_friends]
 
 	def create
-		params[:password] = "temp1234" if params[:password].blank?
 		@user = User.new(email: params[:email], password: params[:password], password_confirmation: params[:password], first_name: params[:first_name], last_name: params[:last_name], fb_id: params[:fb_id])
 		if @user.save
 			render json: {
@@ -70,7 +69,7 @@ class Api::V1::UsersController < Api::V1::ApplicationController
 	private
 
 	def user_params
-		params.require(:user).permit(:first_name, :last_name, :password, :chips, :password_confirmation, :image, :fb_id, :email, :device_avatar_id, :shootout_level, :diamonds, :xp, :level_precentage, fb_friend_list: [])
+		params.require(:user).permit(:first_name, :last_name, :password, :chips, :password_confirmation, :device_avatar_id, :won_count, :lost_count, :rank, :total_coins_won, :win_percentage, :total_tournament_won, :total_tournament_played, :win_streak, :ball_potted, :accuracy, :xp, :current_level, :country, :achievement, :current_coins_balance)
 	end
 
 	def find_user
