@@ -11,11 +11,19 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150304100902) do
+ActiveRecord::Schema.define(version: 20150309092451) do
 
   create_table "api_keys", force: true do |t|
     t.string   "token"
-    t.boolean  "active"
+    t.boolean  "active",     default: true
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "clubs", force: true do |t|
+    t.string   "name"
+    t.decimal  "entry_fees",    precision: 10, scale: 0
+    t.decimal  "winner_amount", precision: 10, scale: 0
     t.datetime "created_at"
     t.datetime "updated_at"
   end
