@@ -11,6 +11,7 @@ Rails.application.routes.draw do
       resources :users
       resources :friend_requests
       resources :sessions, only: [:create, :destroy]
+      resources :clubs
       resources :users do
         member do
           get :friend_request_sent
