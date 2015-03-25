@@ -82,7 +82,7 @@ class Api::V1::SessionsController < Api::V1::ApplicationController
 		if @user.present?
 			login_history_id = @user.login_histories.where(login_histories: {login_token: params[:id]}).first.id
 			if @user.update_attributes(online: false, login_histories_attributes: {id: login_history_id ,active: false})
-				REDIS_CLIENT.srem("game_players", "game_player:#{params[:id]}")
+				# REDIS_CLIENT.srem("game_players", "game_player:#{params[:id]}")
 				render json: {
 					success: true,
 					message: "You have been signed out successfully!"
