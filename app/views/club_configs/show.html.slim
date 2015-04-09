@@ -1,0 +1,15 @@
+p#notice = notice
+
+p
+  strong Name:
+  = @club_config.name
+p
+  strong Entry fees:
+  = @club_config.entry_fees
+p
+  strong Winner amount:
+  = @club_config.winner_amount
+
+= link_to 'Edit', edit_club_config_path(@club_config)
+'|
+= link_to 'Back', club_configs_path

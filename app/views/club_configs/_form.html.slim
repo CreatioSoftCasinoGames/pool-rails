@@ -1,0 +1,18 @@
+= form_for @club_config do |f|
+  - if @club_config.errors.any?
+    #error_explanation
+      h2 = "#{pluralize(@club_config.errors.count, "error")} prohibited this club_config from being saved:"
+      ul
+        - @club_config.errors.full_messages.each do |message|
+          li = message
+
+  .field
+    = f.label :name
+    = f.text_field :name
+  .field
+    = f.label :entry_fees
+    = f.text_field :entry_fees
+  .field
+    = f.label :winner_amount
+    = f.text_field :winner_amount
+  .actions = f.submit
