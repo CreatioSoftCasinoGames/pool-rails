@@ -15,8 +15,8 @@ class UtilityController < ApplicationController
 			club_config.clubs.each do |club|
 				REDIS_CLIENT.SADD("clubs","club:#{club.id}")
 				REDIS_CLIENT.SADD("club_config_clubs:#{club.club_config_id}", "club:#{club.id}")
-				REDIS_CLIENT.ZADD("club_config_occupancy:#{club.club_config_id}", 0, "club:#{club.id}")
-				REDIS_CLIENT.HMSET("club:#{club.id}", "name", club.name, "club_config_id", club.club_config_id)
+				REDIS_CLIENT.ZADD("club_config_occupancy:#{club.club_config_id}", 2, "club:#{club.id}")
+				REDIS_CLIENT.HMSET("club:#{club.id}", "name", club.name, "club_config_id", club.club_config_id, "entry_fees", club.entry_fees, "winner_amount", club.winner_amount)
 			end
 		end
 	

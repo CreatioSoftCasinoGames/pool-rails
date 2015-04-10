@@ -1,18 +1,26 @@
-= form_for @club_config do |f|
-  - if @club_config.errors.any?
-    #error_explanation
-      h2 = "#{pluralize(@club_config.errors.count, "error")} prohibited this club_config from being saved:"
-      ul
-        - @club_config.errors.full_messages.each do |message|
-          li = message
-
-  .field
-    = f.label :name
-    = f.text_field :name
-  .field
-    = f.label :entry_fees
-    = f.text_field :entry_fees
-  .field
-    = f.label :winner_amount
-    = f.text_field :winner_amount
-  .actions = f.submit
+= form_for @club_config, html: { class: "form form-horizontal club_config" } do |f|
+  .form-group
+    = f.label :name, :class => 'control-label col-lg-2'
+    .col-lg-10
+      = f.text_field :name, :class => 'form-control'
+    = f.error_span(:name)
+  .form-group
+    = f.label :entry_fees, :class => 'control-label col-lg-2'
+    .col-lg-10
+      = f.text_field :entry_fees, :class => 'form-control'
+    = f.error_span(:entry_fees)
+  .form-group
+    = f.label :winner_amount, :class => 'control-label col-lg-2'
+    .col-lg-10
+      = f.text_field :winner_amount, :class => 'form-control'
+    = f.error_span(:winner_amount)
+  .form-group
+    = f.label :club_type, :class => 'control-label col-lg-2'
+    .col-lg-10
+      = f.select :club_type, options_for_select([ "Tournament", "OneToOne" ]), include_blank: "select" , :class => 'form-control'
+    = f.error_span(:club_type)
+  .form-group
+    .col-lg-offset-2.col-lg-10
+      = f.submit nil, :class => 'btn btn-primary'
+      '
+      = link_to t('.cancel', :default => t("helpers.links.cancel")), club_configs_path, :class => 'btn'

@@ -42,6 +42,6 @@ class ClubsController < ApplicationController
     end
 
     def club_params
-      params.require(:club).permit(:name, :entry_fees, :winner_amount)
+      params.require(:club).permit(:name, :entry_fees, :winner_amount, :club_config_id)
     end
 end

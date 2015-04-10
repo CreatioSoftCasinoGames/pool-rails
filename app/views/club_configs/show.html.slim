@@ -1,15 +1,26 @@
-p#notice = notice
+- model_class = ClubConfig
+.page-header
+  h1=t '.title', :default => model_class.model_name.human.titleize
 
 p
-  strong Name:
+  strong= model_class.human_attribute_name(:name) + ':'
+  br
   = @club_config.name
 p
-  strong Entry fees:
+  strong= model_class.human_attribute_name(:entry_fees) + ':'
+  br
   = @club_config.entry_fees
 p
-  strong Winner amount:
+  strong= model_class.human_attribute_name(:winner_amount) + ':'
+  br
   = @club_config.winner_amount
+p
+  strong= model_class.human_attribute_name(:club_type) + ':'
+  br
+  = @club_config.club_type
 
-= link_to 'Edit', edit_club_config_path(@club_config)
-'|
-= link_to 'Back', club_configs_path
+= link_to t('.back', :default => t("helpers.links.back")), club_configs_path, :class => 'btn btn-default'
+'
+= link_to t('.edit', :default => t("helpers.links.edit")), edit_club_config_path(@club_config), :class => 'btn btn-default'
+'
+= link_to t('.destroy', :default => t("helpers.links.destroy")), club_config_path(@club_config), :method => "delete", :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) }, :class => 'btn btn-danger'
