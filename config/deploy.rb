@@ -6,7 +6,7 @@ require 'capistrano/ext/multistage'
 
 # Whenever setup for application
 set(:whenever_command) { "RAILS_ENV=#{rails_env} bundle exec whenever" }
-set :whenever_environment, defer { 'master' }
+set :whenever_environment, defer { 'production' }
 
 
 # Application configuration
@@ -19,8 +19,8 @@ default_run_options[:pty] = true
 ssh_options[:forward_agent] = true
 
 # Application stages configuration
-set :stages, %w(production-frontend production-solr master)
-set :default_stage, 'master'
+set :stages, %w(production-frontend production-solr production)
+set :default_stage, 'production'
 
 
 # Unicorn environment configuration
