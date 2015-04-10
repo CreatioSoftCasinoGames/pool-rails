@@ -1,0 +1,25 @@
+h1 Listing club_configs
+
+table
+  thead
+    tr
+      th Name
+      th Entry fees
+      th Winner amount
+      th
+      th
+      th
+
+  tbody
+    - @club_configs.each do |club_config|
+      tr
+        td = club_config.name
+        td = club_config.entry_fees
+        td = club_config.winner_amount
+        td = link_to 'Show', club_config
+        td = link_to 'Edit', edit_club_config_path(club_config)
+        td = link_to 'Destroy', club_config, data: {:confirm => 'Are you sure?'}, :method => :delete
+
+br
+
+= link_to 'New Club config', new_club_config_path

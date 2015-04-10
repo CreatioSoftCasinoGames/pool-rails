@@ -1,5 +1,4 @@
 class UtilityController < ApplicationController
-
 	def show_api_key
 		@api_key = ApiKey.where(active: true).first
 	end
@@ -9,4 +8,19 @@ class UtilityController < ApplicationController
 		redirect_to show_api_key_url, flash: {success: "New keys created successfully !"}
 	end
 
+	def sync_data
+		ClubConfig.includes(:clubs).all.each do |club_config|	
+		REDIS_CLIENT.SADD("club_configs", "club_config:#{club_config.id}")
+			REDIS_CLIENT.HMSET("club_config:#{club_config.id}", "name", club_config.name);		
+			club_config.clubs.each do |club|
+				REDIS_CLIENT.SADD("clubs","club:#{club.id}")
+				REDIS_CLIENT.SADD("club_config_clubs:#{club.club_config_id}", "club:#{club.id}")
+				REDIS_CLIENT.ZADD("club_config_occupancy:#{club.club_config_id}", 0, "club:#{club.id}")
+				REDIS_CLIENT.HMSET("club:#{club.id}", "name", club.name, "club_config_id", club.club_config_id)
+			end
+		end
+	
+		redirect_to root_path, flash: {success: "Data successfully synced !" }
+	end
 end
+

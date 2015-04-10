@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150309092451) do
+ActiveRecord::Schema.define(version: 20150409110349) do
 
   create_table "api_keys", force: true do |t|
     t.string   "token"
@@ -20,12 +20,21 @@ ActiveRecord::Schema.define(version: 20150309092451) do
     t.datetime "updated_at"
   end
 
-  create_table "clubs", force: true do |t|
+  create_table "club_configs", force: true do |t|
     t.string   "name"
     t.decimal  "entry_fees",    precision: 10, scale: 0
     t.decimal  "winner_amount", precision: 10, scale: 0
     t.datetime "created_at"
     t.datetime "updated_at"
+  end
+
+  create_table "clubs", force: true do |t|
+    t.string   "name"
+    t.decimal  "entry_fees",     precision: 10, scale: 0
+    t.decimal  "winner_amount",  precision: 10, scale: 0
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "club_config_id"
   end
 
   create_table "friend_requests", force: true do |t|
@@ -88,6 +97,7 @@ ActiveRecord::Schema.define(version: 20150309092451) do
     t.decimal  "current_coins_balance",   precision: 10, scale: 0, default: 1000
     t.boolean  "is_dummy",                                         default: false
     t.string   "device_avtar_id"
+    t.decimal  "total_time_in_game",      precision: 10, scale: 0, default: 0
   end
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree

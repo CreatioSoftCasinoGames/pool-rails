@@ -1,2 +1,6 @@
+= form_tag '/utility/sync_data', :method => 'get' do
+	.form-group
+		- if user_signed_in?
+	  	button type="submit" Sync Database
 h1 Welcome#index
 p Find me in app/views/welcome/index.html.slim

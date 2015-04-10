@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
   
+  resources :club_configs
+
   resources :clubs
 
   devise_for :users
@@ -8,6 +10,7 @@ Rails.application.routes.draw do
 
   namespace :api do
     namespace :v1 do
+      resources :club_configs
       resources :users
       resources :friend_requests
       resources :sessions, only: [:create, :destroy]
@@ -77,4 +80,11 @@ Rails.application.routes.draw do
   #     # (app/controllers/admin/products_controller.rb)
   #     resources :products
   #   end
+  
+
+  resources :utility do
+    collection do
+      get :sync_data
+    end
+  end
 end
