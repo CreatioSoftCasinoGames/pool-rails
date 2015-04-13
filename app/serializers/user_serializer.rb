@@ -23,6 +23,8 @@ class UserSerializer < ActiveModel::Serializer
               :country,
               :achievement,
               :current_coins_balance,
-              :is_dummy
+              :is_dummy,
+              :total_games_played,
+              :flag
               
 end

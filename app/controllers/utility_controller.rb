@@ -22,5 +22,6 @@ class UtilityController < ApplicationController
 	
 		redirect_to root_path, flash: {success: "Data successfully synced !" }
 	end
+	REDIS_CLIENT.SET("bot_token", "iambot0001" )
 end
 

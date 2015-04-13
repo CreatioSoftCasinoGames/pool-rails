@@ -21,6 +21,7 @@ Rails.application.routes.draw do
           get :my_friend_requests
           get :my_friends
           delete :delete_friend
+          get :opponent_profile
         end
       end
     end

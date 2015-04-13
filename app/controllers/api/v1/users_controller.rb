@@ -66,10 +66,14 @@ class Api::V1::UsersController < Api::V1::ApplicationController
 		render json: @user
 	end
 
+	# def opponent_profile
+	# 	render json: @user = User.where(login_token:(params[:opponent_id])).first
+	# end
+
 	private
 
 	def user_params
-		params.require(:user).permit(:first_name, :last_name, :password, :chips, :password_confirmation, :device_avatar_id, :won_count, :lost_count, :rank, :total_coins_won, :win_percentage, :total_tournament_won, :total_tournament_played, :win_streak, :ball_potted, :accuracy, :xp, :current_level, :country, :achievement, :current_coins_balance)
+		params.require(:user).permit(:first_name, :last_name, :password, :chips, :password_confirmation, :device_avatar_id, :won_count, :lost_count, :rank, :total_coins_won, :win_percentage, :total_tournament_won, :total_tournament_played, :win_streak, :ball_potted, :accuracy, :xp, :current_level, :country, :achievement, :current_coins_balance, :total_games_played, :flag)
 	end
 
 	def find_user
