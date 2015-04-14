@@ -10,6 +10,12 @@ class UtilityController < ApplicationController
 
 	def sync_data
 		ClubConfig.includes(:clubs).all.each do |club_config|	
+		if (club_config.club_type == "OneToOne")
+		  REDIS_CLIENT.SADD("onetoone_room_players", "onlinePlayer:#{club_config.id}")
+		else
+		  REDIS_CLIENT.SADD("tournament_room_players", "onlinePlayer:#{club_config.id}")
+		end
+
 		REDIS_CLIENT.SADD("club_configs", "club_config:#{club_config.id}")
 			REDIS_CLIENT.HMSET("club_config:#{club_config.id}", "name", club_config.name);		
 			club_config.clubs.each do |club|
