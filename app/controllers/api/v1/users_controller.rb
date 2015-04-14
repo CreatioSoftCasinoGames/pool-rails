@@ -66,9 +66,9 @@ class Api::V1::UsersController < Api::V1::ApplicationController
 		render json: @user
 	end
 
-	# def opponent_profile
-	# 	render json: @user = User.where(login_token:(params[:opponent_id])).first
-	# end
+	def opponent_profile
+		render json: @user = User.where(login_token:(params[:opponent_id])).first
+	end
 
 	private
 
