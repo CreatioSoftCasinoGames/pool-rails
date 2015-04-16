@@ -30,4 +30,3 @@ class UtilityController < ApplicationController
 	end
 	REDIS_CLIENT.SET("bot_token", "iambot0001" )
 end
-

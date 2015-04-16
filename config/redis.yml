@@ -8,5 +8,5 @@ development:
 
 # production environment
 production:
-    host: 'pool-redis.poolapi.com'
+    host: 'pool-redis.8poolapi.com'
     port: '6379'
