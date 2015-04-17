@@ -56,7 +56,15 @@ class Api::V1::SessionsController < Api::V1::ApplicationController
 								@messages = @user.errors.full_messages.join(", ")
 							end
 						end
-					end
+					elsif params[:is_dummy]
+					  @user = User.create(first_name: params[:first_name], last_name: params[:last_name], is_dummy: true)
+						if @user.save
+						  @success = true
+						else
+							@success = false
+							@message = @user.errors.full_messages.join(", ")
+						end
+				  end
 				end
 			end
 		end

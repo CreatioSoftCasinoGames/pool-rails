@@ -28,6 +28,8 @@ class UtilityController < ApplicationController
 	
 		redirect_to root_path, flash: {success: "Data successfully synced !" }
 	end
-	REDIS_CLIENT.SET("bot_token", "iambot0001" )
+	User.where(is_dummy: true).each do |bot_player|
+		REDIS_CLIENT.SADD("available_bots", bot_player.login_token)
+	end
 end
 
