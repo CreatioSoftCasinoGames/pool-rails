@@ -7,7 +7,7 @@ class UpdateWorker
 		profile_data = JSON.parse(data)
 		k = profile_data["id"]
 		user = User.fetch_by_login_token(profile_data["id"])
-		
+
 		if profile_data["data"]["ball_potted"]
 			user.update_attributes(ball_potted: profile_data["data"]["ball_potted"])
 
@@ -19,6 +19,9 @@ class UpdateWorker
 
 		elsif profile_data["data"]["win_percentage"]
 			user.update_attributes(win_percentage: profile_data["data"]["win_percentage"])
+    
+		elsif profile_data["data"]["won_count"]
+			user.update_attributes(won_count: profile_data["data"]["won_count"])
 
 		elsif profile_data["data"]["xp"]
 			user.update_attributes(xp: profile_data["data"]["xp"])

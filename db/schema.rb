@@ -99,7 +99,7 @@ ActiveRecord::Schema.define(version: 20150413063709) do
     t.boolean  "is_dummy",                                         default: false
     t.string   "device_avtar_id"
     t.decimal  "total_time_in_game",      precision: 10, scale: 0, default: 0
-    t.integer  "total_games_played"
+    t.integer  "total_games_played",                               default: 0
     t.binary   "flag"
   end
 
