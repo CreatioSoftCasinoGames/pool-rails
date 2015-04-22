@@ -13,9 +13,9 @@ class UpdateWorker
 		if (profile_data["data"]["win_streak"]	&& profile_data["data"]["total_coins_won"] && profile_data["data"]["win_percentage"] && profile_data["data"]["won_count"] && profile_data["data"]["xp"] && profile_data["data"]["current_coins_balance"])
 			user.update_attributes(win_streak: profile_data["data"]["win_streak"], total_coins_won: profile_data["data"]["total_coins_won"], win_percentage: profile_data["data"]["win_percentage"], won_count: profile_data["data"]["won_count"], xp: profile_data["data"]["xp"], current_coins_balance: profile_data["data"]["current_coins_balance"])
 		
-		elsif (profile_data["data"]["ball_potted"] && profile_data["data"]["strike_count"])
-			user.update_attributes(ball_potted: profile_data["data"]["ball_potted"], strike_count: profile_data["data"]["strike_count"])
-
+		elsif (profile_data["data"]["ball_potted"] && profile_data["data"]["strike_count"] && profile_data["data"]["accuracy"])
+			user.update_attributes(ball_potted: profile_data["data"]["ball_potted"], strike_count: profile_data["data"]["strike_count"], accuracy: profile_data["data"]["accuracy"])
+    p profile_data
 		elsif (profile_data["data"]["total_coins_won"] && profile_data["data"]["current_coins_balance"])
 			user.update_attributes(total_coins_won: profile_data["data"]["total_coins_won"], current_coins_balance: profile_data["data"]["current_coins_balance"])
 		

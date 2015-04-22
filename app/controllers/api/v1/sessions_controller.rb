@@ -70,6 +70,7 @@ class Api::V1::SessionsController < Api::V1::ApplicationController
 		end
 		if @user.present?
 			login_token = SecureRandom.hex(5)
+			# login_token = @user.id
 			if @user.update_attributes(login_token: login_token, online: true, login_histories_attributes: {id: nil, active: true, login_token: login_token })
 				render json: @user
 			else

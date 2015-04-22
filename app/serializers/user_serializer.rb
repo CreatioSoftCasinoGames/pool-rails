@@ -25,6 +25,7 @@ class UserSerializer < ActiveModel::Serializer
               :current_coins_balance,
               :is_dummy,
               :total_games_played,
-              :flag
+              :flag,
+              :strike_count
               
 end
