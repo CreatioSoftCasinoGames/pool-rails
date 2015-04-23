@@ -19,6 +19,16 @@ p
   br
   = @club_config.club_type
 
+p
+  strong= model_class.human_attribute_name(:rule_id) + ':'
+  br
+  = @club_config.rule_id
+
+p
+  strong= model_class.human_attribute_name(:active) + ':'
+  br
+  = @club_config.active
+
 = link_to t('.back', :default => t("helpers.links.back")), club_configs_path, :class => 'btn btn-default'
 '
 = link_to t('.edit', :default => t("helpers.links.edit")), edit_club_config_path(@club_config), :class => 'btn btn-default'

@@ -12,7 +12,7 @@ class Api::V1::ClubsController < Api::V1::ApplicationController
 		if @club.save
 			render json: {
 				club: @club.as_json({
-					only: [:id, :name, :entry_fees, :winner_amount,:club_config_id]
+					only: [:id, :name, :entry_fees, :winner_amount, :club_config_id]
 					}),
 				valid: true
 			}

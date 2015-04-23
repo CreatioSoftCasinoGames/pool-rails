@@ -9,6 +9,8 @@ table.table.table-striped
       th= model_class.human_attribute_name(:entry_fees)
       th= model_class.human_attribute_name(:winner_amount)
       th= model_class.human_attribute_name(:club_type)
+      th= model_class.human_attribute_name(:rule_id)
+      th= model_class.human_attribute_name(:active)
       th= model_class.human_attribute_name(:created_at)
       th=t '.actions', :default => t("helpers.actions")
   tbody
@@ -19,6 +21,8 @@ table.table.table-striped
         td= club_config.entry_fees
         td= club_config.winner_amount
         td= club_config.club_type
+        td= club_config.rule_id
+        td= club_config.active
         td=l club_config.created_at
         td
           = link_to t('.edit', :default => t("helpers.links.edit")), edit_club_config_path(club_config), :class => 'btn btn-default btn-xs'

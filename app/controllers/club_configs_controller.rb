@@ -42,6 +42,6 @@ class ClubConfigsController < ApplicationController
     end
 
     def club_config_params
-      params.require(:club_config).permit(:name, :entry_fees, :winner_amount, :club_type)
+      params.require(:club_config).permit(:name, :entry_fees, :winner_amount, :club_type, :rule_id , :active)
     end
 end
