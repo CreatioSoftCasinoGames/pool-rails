@@ -31,8 +31,24 @@
       .col-lg-10
         = f.check_box :active
       = f.error_span(:active)
+
+  .form-group
+    = f.label :winner_xp, :class => 'control-label col-lg-2'
+    .col-lg-10
+      = f.text_field :winner_xp, :class => 'form-control'
+    = f.error_span(:winner_xp)
+
+  .form-group
+    = f.label :looser_xp, :class => 'control-label col-lg-2'
+    .col-lg-10
+      = f.text_field :looser_xp, :class => 'form-control'
+    = f.error_span(:looser_xp)
+
+
   .form-group
     .col-lg-offset-2.col-lg-10
       = f.submit nil, :class => 'btn btn-primary'
       '
       = link_to t('.cancel', :default => t("helpers.links.cancel")), club_configs_path, :class => 'btn'
+
+

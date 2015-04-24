@@ -4,7 +4,7 @@ class ClubConfigsController < ApplicationController
   respond_to :html
 
   def index
-    @club_configs = ClubConfig.all
+    @club_configs = ClubConfig.where(club_type: params[:club_type])
     respond_with(@club_configs)
   end
 
@@ -42,6 +42,6 @@ class ClubConfigsController < ApplicationController
     end
 
     def club_config_params
-      params.require(:club_config).permit(:name, :entry_fees, :winner_amount, :club_type, :rule_id , :active)
+      params.require(:club_config).permit(:name, :entry_fees, :winner_amount, :club_type, :rule_id , :active, :winner_xp, :looser_xp)
     end
 end

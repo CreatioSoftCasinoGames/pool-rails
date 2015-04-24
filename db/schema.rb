@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150423121257) do
+ActiveRecord::Schema.define(version: 20150424053341) do
 
   create_table "api_keys", force: true do |t|
     t.string   "token"
@@ -29,6 +29,8 @@ ActiveRecord::Schema.define(version: 20150423121257) do
     t.string   "club_type"
     t.integer  "rule_id"
     t.boolean  "active"
+    t.integer  "winner_xp"
+    t.integer  "looser_xp"
   end
 
   create_table "clubs", force: true do |t|
