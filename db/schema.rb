@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150424053341) do
+ActiveRecord::Schema.define(version: 20150427121200) do
 
   create_table "api_keys", force: true do |t|
     t.string   "token"
@@ -43,12 +43,14 @@ ActiveRecord::Schema.define(version: 20150424053341) do
   end
 
   create_table "friend_requests", force: true do |t|
-    t.integer  "user_id"
     t.integer  "requested_to_id"
     t.boolean  "confirmed",       default: false
+    t.integer  "user_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  add_index "friend_requests", ["user_id"], name: "index_friend_requests_on_user_id", using: :btree
 
   create_table "friendships", force: true do |t|
     t.integer  "user_id"

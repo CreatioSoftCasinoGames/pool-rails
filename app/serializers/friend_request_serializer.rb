@@ -1,8 +1,4 @@
 class FriendRequestSerializer < ActiveModel::Serializer
-	attributes :id,
-						 :login_token, 
-						 :requested_to_token, 
-						 :confirmed,
-						 :full_name,
-						 :image_url
+  attributes :id, :requested_to_id, :confirmed
+  has_one :user
 end

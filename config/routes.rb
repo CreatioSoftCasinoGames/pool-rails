@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
   
+  resources :friend_requests
+
   resources :club_configs
 
   resources :clubs

@@ -20,9 +20,12 @@ html lang="en"
           span.icon-bar
           span.icon-bar
           span.icon-bar
-        a.navbar-brand href="#"Pool
+        a.navbar-brand href="/"Pool
         .navbar-collapse.collapse.navbar-responsive-collapse.pull-right
           ul.nav.navbar-nav
+            li= link_to "All Clubs", club_configs_path
+            li= link_to "Tournament", club_configs_path(club_type: "Tournament")
+            li= link_to "OneToOne", club_configs_path(club_type: "OneToOne")
             li= link_to "Api Key", show_api_key_path
             li= link_to "Logout", destroy_user_session_path, :method => :delete
             li= link_to("Sign In", new_user_session_path)

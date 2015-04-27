@@ -4,7 +4,11 @@ class ClubConfigsController < ApplicationController
   respond_to :html
 
   def index
-    @club_configs = ClubConfig.where(club_type: params[:club_type])
+    if params[:club_type]
+      @club_configs = ClubConfig.where(club_type: params[:club_type])
+    else
+      @club_configs = ClubConfig.all
+    end
     respond_with(@club_configs)
   end
 

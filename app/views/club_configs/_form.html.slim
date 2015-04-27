@@ -2,12 +2,12 @@
   .form-group
     = f.label :name, :class => 'control-label col-lg-2'
     .col-lg-10
-      = f.text_field :name, :class => 'form-control'
+      = f.text_field :name, :placeholder => "Only characters and Numbers", :class => 'form-control'
     = f.error_span(:name)
   .form-group
     = f.label :entry_fees, :class => 'control-label col-lg-2'
     .col-lg-10
-      = f.text_field :entry_fees, :class => 'form-control'
+      = f.text_field :entry_fees, :placeholder => "Only Numbers", :class => 'form-control'
     = f.error_span(:entry_fees)
   .form-group
     = f.label :winner_amount, :class => 'control-label col-lg-2'
@@ -17,7 +17,7 @@
   .form-group
     = f.label :club_type, :class => 'control-label col-lg-2'
     .col-lg-10
-      = f.select :club_type, options_for_select([ "Tournament", "OneToOne" ]), include_blank: "select" , :class => 'form-control'
+      = f.select :club_type, options_for_select(clubs, @club_config.club_type), {:prompt => "Please select",:selected => params[:club_type]} , :class => 'form-control'
     = f.error_span(:club_type)
 
   .form-group
@@ -50,5 +50,4 @@
       = f.submit nil, :class => 'btn btn-primary'
       '
       = link_to t('.cancel', :default => t("helpers.links.cancel")), club_configs_path, :class => 'btn'
-
 

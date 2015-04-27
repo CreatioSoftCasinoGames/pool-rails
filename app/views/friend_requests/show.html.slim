@@ -1,0 +1,15 @@
+p#notice = notice
+
+p
+  strong Requested to:
+  = @friend_request.requested_to_id
+p
+  strong Confirmed:
+  = @friend_request.confirmed
+p
+  strong User:
+  = @friend_request.user
+
+= link_to 'Edit', edit_friend_request_path(@friend_request)
+'|
+= link_to 'Back', friend_requests_path
