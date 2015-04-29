@@ -18,6 +18,10 @@ class Api::V1::UsersController < Api::V1::ApplicationController
 		end
 	end
 
+	def show
+		render json: @user
+	end
+
 	def update
 		if @user.update_attributes(user_params)
 			render json: {

@@ -1,25 +1,26 @@
-h1 Listing friend_requests
-
-table
+- model_class = FriendRequest
+.page-header
+  h1=t '.title', :default => model_class.model_name.human.pluralize.titleize
+table.table.table-striped
   thead
     tr
-      th Requested to
-      th Confirmed
-      th User
-      th
-      th
-      th
-
+      th= model_class.human_attribute_name(:id)
+      th= model_class.human_attribute_name(:requested_to_id)
+      th= model_class.human_attribute_name(:confirmed)
+      th= model_class.human_attribute_name(:user_id)
+      th= model_class.human_attribute_name(:created_at)
+      th=t '.actions', :default => t("helpers.actions")
   tbody
     - @friend_requests.each do |friend_request|
       tr
-        td = friend_request.requested_to_id
-        td = friend_request.confirmed
-        td = friend_request.user
-        td = link_to 'Show', friend_request
-        td = link_to 'Edit', edit_friend_request_path(friend_request)
-        td = link_to 'Destroy', friend_request, data: {:confirm => 'Are you sure?'}, :method => :delete
+        td= link_to friend_request.id, friend_request_path(friend_request)
+        td= friend_request.requested_to_id
+        td= friend_request.confirmed
+        td= friend_request.user_id
+        td=l friend_request.created_at
+        td
+          = link_to t('.edit', :default => t("helpers.links.edit")), edit_friend_request_path(friend_request), :class => 'btn btn-default btn-xs'
+          '
+          = link_to t('.destroy', :default => t("helpers.links.destroy")), friend_request_path(friend_request), :method => :delete, :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) }, :class => 'btn btn-xs btn-danger'
 
-br
-
-= link_to 'New Friend request', new_friend_request_path
+= link_to t('.new', :default => t("helpers.links.new")), new_friend_request_path, :class => 'btn btn-primary'

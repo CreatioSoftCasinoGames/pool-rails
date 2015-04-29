@@ -1,18 +1,21 @@
-= form_for @friend_request do |f|
-  - if @friend_request.errors.any?
-    #error_explanation
-      h2 = "#{pluralize(@friend_request.errors.count, "error")} prohibited this friend_request from being saved:"
-      ul
-        - @friend_request.errors.full_messages.each do |message|
-          li = message
-
-  .field
-    = f.label :requested_to_id
-    = f.number_field :requested_to_id
-  .field
-    = f.label :confirmed
-    = f.check_box :confirmed
-  .field
-    = f.label :user
-    = f.text_field :user
-  .actions = f.submit
+= form_for @friend_request, html: { class: "form form-horizontal friend_request" } do |f|
+  .form-group
+    = f.label :requested_to_id, :class => 'control-label col-lg-2'
+    .col-lg-10
+      = f.text_field :requested_to_id, :class => 'form-control'
+    = f.error_span(:requested_to_id)
+  .form-group
+    = f.label :confirmed, :class => 'control-label col-lg-2'
+    .col-lg-10
+      = f.text_field :confirmed, :class => 'form-control'
+    = f.error_span(:confirmed)
+  .form-group
+    = f.label :user_id, :class => 'control-label col-lg-2'
+    .col-lg-10
+      = f.text_field :user_id, :class => 'form-control'
+    = f.error_span(:user_id)
+  .form-group
+    .col-lg-offset-2.col-lg-10
+      = f.submit nil, :class => 'btn btn-primary'
+      '
+      = link_to t('.cancel', :default => t("helpers.links.cancel")), friend_requests_path, :class => 'btn'

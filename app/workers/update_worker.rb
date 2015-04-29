@@ -5,7 +5,6 @@ class UpdateWorker
 
 	def perform(data)
 		profile_data = JSON.parse(data)
-		p profile_data
 		k = profile_data["id"]
 		user = User.fetch_by_login_token(profile_data["id"])
 
@@ -15,7 +14,6 @@ class UpdateWorker
 		
 		elsif (profile_data["data"]["ball_potted"] && profile_data["data"]["strike_count"] && profile_data["data"]["accuracy"])
 			user.update_attributes(ball_potted: profile_data["data"]["ball_potted"], strike_count: profile_data["data"]["strike_count"], accuracy: profile_data["data"]["accuracy"])
-    p profile_data
 		elsif (profile_data["data"]["total_coins_won"] && profile_data["data"]["current_coins_balance"])
 			user.update_attributes(total_coins_won: profile_data["data"]["total_coins_won"], current_coins_balance: profile_data["data"]["current_coins_balance"])
 		
