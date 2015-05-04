@@ -27,6 +27,6 @@ class UserSerializer < ActiveModel::Serializer
               :total_games_played,
               :flag,
               :strike_count,
-              :device_id
-              
+              :device_id,
+              :device_avatar_id              
 end

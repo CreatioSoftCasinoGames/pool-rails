@@ -26,6 +26,11 @@ class User < ActiveRecord::Base
     end
   end
 
+  def avatar
+    self.image? ? image.url(:avatar) : nil
+  end
+  
+
   def player_since
     created_at.strftime("%B,%Y")
   end
