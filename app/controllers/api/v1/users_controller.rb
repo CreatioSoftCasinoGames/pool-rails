@@ -54,6 +54,25 @@ class Api::V1::UsersController < Api::V1::ApplicationController
 		})
 	end
 
+	
+	def sent_gift
+		render json: @user.gift_requests_sent.where(is_asked: false)
+	end
+
+	def received_gift
+		render json: @user.unconfirmed_gift_requests.where(is_asked: false, confirmed: false)
+	end
+
+	def ask_for_gift_to
+		render json: @user.gift_requests_sent.where(is_asked: true)
+	end
+
+	def ask_for_gift_by
+		render json: @user.unconfirmed_gift_requests.where(is_asked: true)
+	end
+
+
+
 	def delete_friend
 		@friend = Friendship.where(user_id: @user.id, friend_id: User.fetch_by_login_token(params[:friend_token])).first.delete
 		@friend1 = Friendship.where(user_id: User.fetch_by_login_token(params[:friend_token]), friend_id: @user.id).first.delete

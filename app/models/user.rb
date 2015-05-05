@@ -11,6 +11,10 @@ class User < ActiveRecord::Base
   has_many :friendships, :dependent => :destroy
   has_many :friends, through: :friendships
 
+  has_many :gift_requests, :dependent => :destroy, foreign_key: "send_to_id"
+  has_many :gift_requests_sent, :dependent => :destroy, class_name: "GiftRequest", foreign_key: "user_id"
+  has_many :unconfirmed_gift_request, -> { where(confirmed: false) }, class_name: "GiftRequest", foreign_key: "send_to_id"
+
   before_validation  :set_fb_password, :set_guest_login_details, :set_fb_friends
 
   devise :database_authenticatable, :registerable,

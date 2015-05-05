@@ -20,6 +20,9 @@ class UpdateWorker
 		elsif profile_data["data"]["total_coins_won"]
 			user.update_attributes(total_coins_won: profile_data["data"]["total_coins_won"])
 
+		elsif profile_data["data"]["device_avatar_id"]
+			user.update_attributes(device_avatar_id: profile_data["data"]["device_avatar_id"])		
+
 		elsif profile_data["data"]["total_games_played"]
 			user.update_attributes(total_games_played: profile_data["data"]["total_games_played"])
 
@@ -38,11 +41,10 @@ class UpdateWorker
 		elsif profile_data["data"]["flag"]
 			user.update_attributes(flag: profile_data["data"]["flag"])
 
-		elsif profile_data["data"]["country"]
+		else profile_data["data"]["country"]
 			user.update_attributes(country: profile_data["data"]["country"])	
 
-		else profile_data["data"]["device_avtar_id"]
-			user.update_attributes(device_avtar_id: profile_data["data"]["device_avtar_id"])		
+		
 
 		end
 		
