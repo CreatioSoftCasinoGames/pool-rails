@@ -32,5 +32,7 @@ class UtilityController < ApplicationController
 	User.where(is_dummy: true).each do |bot_player|
 		REDIS_CLIENT.SADD("available_bots", bot_player.login_token)
 	end
+	REDIS_CLIENT.DEL("busy_bots")
+
 end
 
