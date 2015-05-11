@@ -1,47 +1,56 @@
-class FriendRequestsController < ApplicationController
-  before_action :set_friend_request, only: [:show, :edit, :update, :destroy]
+class Api::V1::FriendRequestsController < Api::V1::ApplicationController
 
-  respond_to :html
+  #skip_before_filter :authenticate_user
 
-  def index
-    @friend_requests = FriendRequest.all
-    respond_with(@friend_requests)
-  end
-
-  def show
-    respond_with(@friend_request)
-  end
-
-  def new
-    @friend_request = FriendRequest.new
-    respond_with(@friend_request)
-  end
-
-  def edit
-  end
+  before_action :get_friend_requests, only: [:show, :destroy, :update]
 
   def create
-    @friend_request = FriendRequest.new(friend_request_params)
-    @friend_request.save
-    respond_with(@friend_request)
+    @friend_request = current_user.friend_requests_sent.build(requested_token: params[:requested_token])
+    if @friend_request.save
+      render json: @friend_request
+    else
+      render json: {
+        errors: @friend_request.errors.full_messages.join(", "),
+        success: false
+      }
+    end
   end
 
   def update
-    @friend_request.update(friend_request_params)
-    respond_with(@friend_request)
+    if @friend_request.update_attributes(friend_request_params)
+      render json: @friend_request
+    else
+      render json: {
+        errors: @friend_request.errors.full_messages.join,
+        success: false
+      }
+    end
   end
 
   def destroy
     @friend_request.destroy
-    respond_with(@friend_request)
+    render json:{
+      success: true
+    }
+  end
+
+  def show
+    render json: @friend_request
   end
 
   private
-    def set_friend_request
-      @friend_request = FriendRequest.find(params[:id])
-    end
 
-    def friend_request_params
-      params.require(:friend_request).permit(:requested_to_id, :confirmed, :user_id)
-    end
+  def current_user
+    User.find_by_login_token(params[:login_token])
+  end
+
+  def friend_request_params
+    params.require(:friend_request).permit(:confirmed)
+  end
+
+  def get_friend_requests
+    @friend_request = FriendRequest.where(id: params[:id]).first
+    (render json: {message: "Friend request not found!", success: false}) if @friend_request.blank?
+  end
+
 end

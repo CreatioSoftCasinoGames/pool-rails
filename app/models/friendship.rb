@@ -13,6 +13,12 @@ class Friendship < ActiveRecord::Base
 
 	def friend_token
 		friend.login_token
+		# User.where(friend_id: self.friend_id).first.login_token
+	end
+
+	def online
+		friend.online
+		# User.where(friend_id: self.friend_id).first.online
 	end
 
 end

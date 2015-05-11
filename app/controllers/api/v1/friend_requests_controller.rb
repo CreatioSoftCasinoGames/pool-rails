@@ -1,12 +1,15 @@
 class Api::V1::FriendRequestsController < Api::V1::ApplicationController
 
-	before_action :get_friend_requests, only: [:show, :destroy, :update]
+	before_action :get_friend_requests, :friend_requests_sent, only: [:show, :destroy, :update]
 
 	def create
 		
 		@friend_request = current_user.friend_requests_sent.build(requested_token: params[:requested_token])
 		if @friend_request.save
-			render json: @friend_request
+			render json:{
+			success: true
+		}
+			
 		else
 			render json: {
 				errors: @friend_request.errors.full_messages.join(", "),
