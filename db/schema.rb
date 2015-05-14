@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150505120243) do
+ActiveRecord::Schema.define(version: 20150513060321) do
 
   create_table "api_keys", force: true do |t|
     t.string   "token"
@@ -40,6 +40,19 @@ ActiveRecord::Schema.define(version: 20150505120243) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "club_config_id"
+  end
+
+  create_table "dynamic_iaps", force: true do |t|
+    t.string   "iap_id"
+    t.decimal  "old_coins_value", precision: 10, scale: 0
+    t.decimal  "new_coins_value", precision: 10, scale: 0
+    t.decimal  "old_pricing",     precision: 10, scale: 0
+    t.decimal  "new_pricing",     precision: 10, scale: 0
+    t.boolean  "offer"
+    t.string   "currency"
+    t.string   "country"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "friend_requests", force: true do |t|

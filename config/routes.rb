@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
   
+  resources :dynamic_iaps
+
   resources :friend_requests
 
   resources :club_configs
@@ -12,6 +14,7 @@ Rails.application.routes.draw do
 
   namespace :api do
     namespace :v1 do
+      resources :dynamic_iaps
       resources :club_configs
       resources :users
       resources :friend_requests
