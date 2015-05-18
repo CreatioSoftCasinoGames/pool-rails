@@ -3,12 +3,12 @@ class Api::V1::SessionsController < Api::V1::ApplicationController
 	def create
 		if params[:fb_id] && params[:device_id]
 			if User.where(fb_id: params[:fb_id]).first.blank?
-				@guest_user = User.where(device_id: params[:device_id], is_facebook_connected: false).first
+				@guest_user = User.where(device_id: params[:device_id]).first
 				if @guest_user.present?
 					@user = @guest_user.dup
-					@user.attributes = {parent_id: @guest_user.id, device_id: nil, is_guest: nil, fb_id: params[:fb_id], email: params[:fb_id]+"@facebook.com"}
+					@user.attributes = {device_id: params[:device_id], is_guest: nil, fb_id: params[:fb_id], email: params[:fb_id]+"@facebook.com"}
 					if @user.save
-						@guest_user.update_attributes(is_facebook_connected: true)
+						# @guest_user.update_attributes(is_fb_connected: true)
 						@success = true
 						@new_user = true
 					else

@@ -1,5 +1,6 @@
 class UserSerializer < ActiveModel::Serializer
-  attributes  :login_token,
+  attributes  :id,
+              :login_token,
   						:email,
   						:full_name,
               :fb_id,

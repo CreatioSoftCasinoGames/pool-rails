@@ -19,7 +19,6 @@ class UtilityController < ApplicationController
 		REDIS_CLIENT.SADD("club_configs", "club_config:#{club_config.id}")
 			REDIS_CLIENT.HMSET("club_config:#{club_config.id}", "name", club_config.name, "club_type", club_config.club_type);		
 			club_config.clubs.each do |club|
-				p club
 			  @club_type =  ClubConfig.where(id:  Club.where(id: club.id).pluck(:club_config_id)).pluck(:club_type)
 				REDIS_CLIENT.SADD("clubs","club:#{club.id}")
 				REDIS_CLIENT.SADD("club_config_clubs:#{club.club_config_id}", "club:#{club.id}")
@@ -31,6 +30,7 @@ class UtilityController < ApplicationController
 		redirect_to root_path, flash: {success: "Data successfully synced !" }
 	end
 	User.where(is_dummy: true).each do |bot_player|
+		p bot_player
 		REDIS_CLIENT.SADD("available_bots", bot_player.login_token)
 	end
 	REDIS_CLIENT.DEL("busy_bots")
