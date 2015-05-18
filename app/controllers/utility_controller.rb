@@ -26,14 +26,12 @@ class UtilityController < ApplicationController
 				REDIS_CLIENT.HMSET("club:#{club.id}", "name", club.name, "club_config_id", club.club_config_id, "entry_fees",  club.entry_fees, "club_type", @club_type, "winner_amount", club.winner_amount)
 			end
 		end
-	
+		User.where(is_dummy: true).each do |bot_player|
+			p bot_player
+			REDIS_CLIENT.SADD("available_bots", bot_player.login_token)
+		end
+		REDIS_CLIENT.DEL("busy_bots")
 		redirect_to root_path, flash: {success: "Data successfully synced !" }
 	end
-	User.where(is_dummy: true).each do |bot_player|
-		p bot_player
-		REDIS_CLIENT.SADD("available_bots", bot_player.login_token)
-	end
-	REDIS_CLIENT.DEL("busy_bots")
-
 end
 
