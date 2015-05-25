@@ -1,3 +1,7 @@
+= form_tag '/utility/flush_data', :method => 'get' do
+	.form-group
+		- if user_signed_in?
+	  	button type="submit" Flush Database
 = form_tag '/utility/sync_data', :method => 'get' do
 	.form-group
 		- if user_signed_in?

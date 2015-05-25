@@ -1,6 +1,7 @@
 class Club < ActiveRecord::Base
 	belongs_to :club_config
 	before_save :set_name
+	has_many :games
 
 	private
 

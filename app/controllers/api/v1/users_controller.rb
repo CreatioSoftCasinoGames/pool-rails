@@ -2,6 +2,10 @@ class Api::V1::UsersController < Api::V1::ApplicationController
 
 	before_action :find_user, only: [:show, :update, :my_friend_requests, :friend_request_sent, :my_friends]
 
+  # def index
+  # 	render json:  @user = User.all 
+  # end
+
 	def create
 		@user = User.new(email: params[:email], password: params[:password], password_confirmation: params[:password], first_name: params[:first_name], last_name: params[:last_name], fb_id: params[:fb_id])
 		if @user.save

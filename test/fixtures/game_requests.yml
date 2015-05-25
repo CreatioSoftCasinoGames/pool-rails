@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  requested_from: MyString
+  requested_to: MyString
+  invitation_type: MyString
+  accepted: false
+
+two:
+  requested_from: MyString
+  requested_to: MyString
+  invitation_type: MyString
+  accepted: false

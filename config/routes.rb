@@ -14,6 +14,11 @@ Rails.application.routes.draw do
 
   namespace :api do
     namespace :v1 do
+      resources :game_requests
+      resources :games do
+        get :player_list
+      end
+
       resources :dynamic_iaps
       resources :club_configs
       resources :users
@@ -96,6 +101,7 @@ Rails.application.routes.draw do
   resources :utility do
     collection do
       get :sync_data
+      get :flush_data
     end
   end
 end
