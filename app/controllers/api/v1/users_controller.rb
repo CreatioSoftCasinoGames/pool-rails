@@ -27,6 +27,7 @@ class Api::V1::UsersController < Api::V1::ApplicationController
 	end
 
 	def update
+		p user_params
 		if @user.update_attributes(user_params)
 			render json: {
 				user: @user.as_json({

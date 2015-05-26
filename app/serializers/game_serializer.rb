@@ -3,6 +3,5 @@ class GameSerializer < ActiveModel::Serializer
 	           :full_name,
 	           :device_avatar_id,
 	           :image_url
-
 	           
 end
