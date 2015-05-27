@@ -6,7 +6,7 @@ class Api::V1::SessionsController < Api::V1::ApplicationController
 				@guest_user = User.where(device_id: params[:device_id], is_fb_connected: false).first
 				if @guest_user.present?
 					@user = @guest_user.dup
-					@user.attributes = {parent_id: @guest_user.id, device_id: params[:device_id], is_guest: false, fb_id: params[:fb_id], email: params[:fb_id]+"@facebook.com", fb_friends_list: params[:fb_friends_list], is_fb_connected: true}
+					@user.attributes = {device_id: params[:device_id], is_guest: false, fb_id: params[:fb_id], email: params[:fb_id]+"@facebook.com", fb_friends_list: params[:fb_friends_list], is_fb_connected: true}
 					if @user.save
 						@guest_user.update_attributes(is_fb_connected: true)
 						@success = true

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150521090840) do
+ActiveRecord::Schema.define(version: 20150527115947) do
 
   create_table "api_keys", force: true do |t|
     t.string   "token"
@@ -73,6 +73,7 @@ ActiveRecord::Schema.define(version: 20150521090840) do
   end
 
   create_table "game_requests", force: true do |t|
+    t.integer  "user_id"
     t.string   "requested_from"
     t.string   "requested_to"
     t.string   "invitation_type"
@@ -150,6 +151,7 @@ ActiveRecord::Schema.define(version: 20150521090840) do
     t.binary   "flag"
     t.float    "strike_count",            limit: 24,                          default: 0.0
     t.integer  "device_avatar_id",                                            default: 0
+    t.boolean  "is_fb_connected",                                             default: false
   end
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree

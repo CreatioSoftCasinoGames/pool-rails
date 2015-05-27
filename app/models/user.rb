@@ -83,14 +83,18 @@ class User < ActiveRecord::Base
   end
 
   def set_fb_friends
+    p fb_friends_list
     if fb_friends_list
       user_ids = User.where(fb_id: fb_friends_list).collect(&:id)
       friend_ids = self.friends.collect(&:id)
       new_friend_ids = user_ids - friend_ids
       deleted_friends_ids = friend_ids - user_ids
       new_friend_ids.each do |friend_id|
-        Friendship.create(user_id: self.id, friend_id: friend_id)
-        Friendship.create(user_id: friend_id, friend_id: self.id)
+        if Friendship.where(user_id: self.id, friend_id: friend_id).blank?
+          p "Create friends!"
+          Friendship.create(user_id: self.id, friend_id: friend_id)
+          Friendship.create(user_id: friend_id, friend_id: self.id)
+        end
       end
       deleted_friends_ids.each do |deleted_friend_id|
         Friendship.where(user_id: self.id, friend_id: deleted_friend_id).first.delete

@@ -27,7 +27,6 @@ class Api::V1::UsersController < Api::V1::ApplicationController
 	end
 
 	def update
-		p user_params
 		if @user.update_attributes(user_params)
 			render json: {
 				user: @user.as_json({
@@ -43,6 +42,8 @@ class Api::V1::UsersController < Api::V1::ApplicationController
 			}
 		end
 	end
+
+
 
 	def friend_request_sent
 		render json: @user.friend_requests_sent.where(confirmed: false)

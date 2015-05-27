@@ -6,11 +6,11 @@ class Game < ActiveRecord::Base
 	attr_accessor :winner_token, :looser_token
 
 	def full_name
-		[user.first_name, user.last_name].join(" ")
+		[winner.first_name, winner.last_name].join(" ")
 	end
 
-	def device_avtar_id
-		user.device_avtar_id
+	def device_avatar_id
+		winner.device_avatar_id
 	end
 
 	def friend_token
@@ -24,9 +24,9 @@ class Game < ActiveRecord::Base
 	end
 
 
-  def avatar
-    self.image? ? image.url(:avatar) : nil
-  end
+  # def avatar
+  #   self.image? ? image.url(:avatar) : nil
+  # end
 
   def image_url 
     if fb_id

@@ -1,7 +1,8 @@
 class GameSerializer < ActiveModel::Serializer
-	attributes :login_token,
+	attributes :winner_id,
+	           :looser_id,
+	           :club_config_id,
 	           :full_name,
-	           :device_avatar_id,
-	           :image_url
+	           :device_avatar_id
 	           
 end
