@@ -1,6 +1,6 @@
 class FriendRequest < ActiveRecord::Base
 	belongs_to :user
-  belongs_to :requested_to, foreign_key: :requested_to_id, class_name: "User"
+	belongs_to :requested_to, foreign_key: :requested_to_id, class_name: "User"
 	has_many :friend_requests_sent
 	before_update :update_friend
 	validate :search_requested_friend, on: :create
@@ -20,8 +20,26 @@ class FriendRequest < ActiveRecord::Base
 	end
 
 	def full_name
-		[user.first_name, user.last_name].join(" ")
-	end
+    [user.first_name, user.last_name].join(" ")
+  end
+  
+ #  def user_name
+ #  	if user.first_name.blank? && user.last_name.blank?
+ #  		"Guest User"
+ #  	else
+ #  		[user.first_name, user.last_name].join(" ")
+ #  	end
+	# end
+
+	# def opponent_name
+	# 	if requested_to.first_name.blank? && requested_to.last_name.blank?
+ #  		"Guest User"
+ #  	else
+ #  		[requested_to.first_name, requested_to.last_name].join(" ")
+  		
+ #  	end
+	# end
+
 
 	private
 

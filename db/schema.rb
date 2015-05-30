@@ -11,11 +11,18 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150527115947) do
+ActiveRecord::Schema.define(version: 20150530044008) do
 
   create_table "api_keys", force: true do |t|
     t.string   "token"
     t.boolean  "active",     default: true
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "client_bugs", force: true do |t|
+    t.text     "exception"
+    t.text     "bug_type"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -74,10 +81,11 @@ ActiveRecord::Schema.define(version: 20150527115947) do
 
   create_table "game_requests", force: true do |t|
     t.integer  "user_id"
+    t.integer  "game_id"
     t.string   "requested_from"
     t.string   "requested_to"
     t.string   "invitation_type"
-    t.boolean  "accepted"
+    t.boolean  "accepted",        default: false
     t.datetime "created_at"
     t.datetime "updated_at"
   end

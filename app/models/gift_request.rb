@@ -63,15 +63,16 @@ class GiftRequest < ActiveRecord::Base
 
 	def credit_gift
 		if self.changes.include?(:confirmed)
+			
 			if gift_type == "coins"
-				gift_coins = reciever.coins + gift_value
-				self.reciever.update_attributes(coins: gift_coins)
-			elsif gift_type == "tickets"
-				tickets = reciever.ticket_bought + gift_value
-				self.reciever.update_attributes(ticket_bought: tickets)
-			elsif gift_type == "powerups"
-				powerups = reciever.powerups_remaining + gift_value
-				self.reciever.update_attributes(powerups_remaining: powerups)
+				# total_coins_won = reciever.coins + total_coins_won
+				# # self.reciever.update_attributes(coins: gift_coins)
+				# elsif gift_type == "tickets"
+				# 	tickets = reciever.ticket_bought + gift_value
+				# 	self.reciever.update_attributes(ticket_bought: tickets)
+				# elsif gift_type == "powerups"
+				# 	powerups = reciever.powerups_remaining + gift_value
+				# 	self.reciever.update_attributes(powerups_remaining: powerups)
 			end
 		end
 	end

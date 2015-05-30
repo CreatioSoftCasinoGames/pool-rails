@@ -52,6 +52,8 @@ gem 'slim'
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
 gem 'byebug'
+# gem 'will_paginate', '~> 3.0.6'
+# gem 'will_paginate-bootstrap', '~> 1.0.1'
 # Use debugger
 # gem 'debugger', group: [:development, :test]
 

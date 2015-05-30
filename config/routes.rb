@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
   
+  resources :client_bugs
+
   resources :dynamic_iaps
 
   resources :friend_requests
@@ -18,7 +20,7 @@ Rails.application.routes.draw do
       resources :games do
         get :player_list
       end
-
+      resources :client_bugs
       resources :dynamic_iaps
       resources :club_configs
       resources :users

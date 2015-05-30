@@ -1,10 +1,6 @@
 class Api::V1::UsersController < Api::V1::ApplicationController
 
-	before_action :find_user, only: [:show, :update, :my_friend_requests, :friend_request_sent, :my_friends]
-
-  # def index
-  # 	render json:  @user = User.all 
-  # end
+	before_action :find_user, only: [:show, :update, :my_friend_requests, :friend_request_sent, :my_friends, :sent_gift, :received_gift, :ask_for_gift_to, :ask_for_gift_by, :delete_friend]
 
 	def create
 		@user = User.new(email: params[:email], password: params[:password], password_confirmation: params[:password], first_name: params[:first_name], last_name: params[:last_name], fb_id: params[:fb_id])
@@ -44,13 +40,20 @@ class Api::V1::UsersController < Api::V1::ApplicationController
 	end
 
 
-
 	def friend_request_sent
-		render json: @user.friend_requests_sent.where(confirmed: false)
+		user_ids = @user.friend_requests_sent.where(confirmed: false).collect(&:id)
+		render :json => User.where(id: user_ids).as_json({
+      only: [:login_token, :device_avatar_id, :confirmed],
+      methods: [:full_name, :image_url]
+    }) 
 	end
 
 	def my_friend_requests
-		render json: @user.unconfirmed_friend_requests.where(confirmed: false)
+		user_ids = @user.unconfirmed_friend_requests.where(confirmed: false).collect(&:id)
+		render :json => User.where(id: user_ids).as_json({
+      only: [:login_token, :device_avatar_id],
+      methods: [:full_name, :image_url]
+    }) 
 	end
 
 	def my_friends
@@ -60,9 +63,29 @@ class Api::V1::UsersController < Api::V1::ApplicationController
 		})
 	end
 
+	def send_in_game_gift
+		render json: InGameGift.all
+	end
+
+	def sent_gift
+		render json: @user.gift_requests_sent.where(is_asked: false)
+	end
+
+	def received_gift
+		render json: @user.unconfirmed_gift_requests.where(is_asked: false)
+	end
+
+	def ask_for_gift_to
+		render json: @user.gift_requests_sent.where(is_asked: true)
+	end
+
+	def ask_for_gift_by
+		render json: @user.unconfirmed_gift_requests.where(is_asked: true)
+	end
+
 	def delete_friend
-		@friend = Friendship.where(user_id: @user.id, friend_id: User.fetch_by_login_token(params[:friend_token])).first.delete
-		@friend1 = Friendship.where(user_id: User.fetch_by_login_token(params[:friend_token]), friend_id: @user.id).first.delete
+		# Friendship.where(user_id: @user.id, friend_id: User.fetch_by_login_token(params[:friend_token]).id).first.delete
+		# Friendship.where(user_id: User.fetch_by_login_token(params[:friend_token]).id, friend_id: @user.id).first.delete
 		render json: {
 			success: true
 		}
@@ -92,3 +115,11 @@ class Api::V1::UsersController < Api::V1::ApplicationController
 	end
 
 end
+
+
+
+
+
+
+
+

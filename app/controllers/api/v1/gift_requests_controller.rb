@@ -26,6 +26,7 @@ class Api::V1::GiftRequestsController < Api::V1::ApplicationController
 	def destroy
 		@gift_request.destroy
 		render json: {
+		  message: "Gift Deleted successfully",
 			success: true
 		}
 	end
@@ -46,7 +47,7 @@ class Api::V1::GiftRequestsController < Api::V1::ApplicationController
 	end
 
 	def current_user
-		User.find_by_login_token(params[:login_token])
+		User.fetch_by_login_token(params[:login_token])
 	end
 
 end
