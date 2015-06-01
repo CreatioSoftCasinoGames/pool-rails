@@ -13,8 +13,9 @@ class User < ActiveRecord::Base
 
   has_many :gift_requests, :dependent => :destroy, foreign_key: "send_to_id"
   has_many :gift_requests_sent, :dependent => :destroy, class_name: "GiftRequest", foreign_key: "user_id"
-  has_many :unconfirmed_gift_request, -> { where(confirmed: false) }, class_name: "GiftRequest", foreign_key: "send_to_id"
+  has_many :unconfirmed_gift_requests, -> { where(confirmed: false) }, class_name: "GiftRequest", foreign_key: "send_to_id"
   has_many :games
+  has_many :game_requests
 
   before_validation  :set_fb_password, :set_guest_login_details, :set_fb_friends
 
@@ -22,6 +23,7 @@ class User < ActiveRecord::Base
          :recoverable, :rememberable, :trackable, :validatable
 
   attr_accessor :fb_friends_list, :is_friend, :is_requested
+  attr_accessor :requested_token
 
   accepts_nested_attributes_for :login_histories
 
@@ -41,9 +43,18 @@ class User < ActiveRecord::Base
   end
 
   def full_name
-    fullName = [first_name, last_name].join(" ")
+    if first_name.blank? 
+      "Guest User"
+    else
+      fullName = [first_name, last_name].join(" ")
+    end
+  end
+
+  def requested_to_token
+    requested_to.login_token
   end
   
+
   def image_url 
     if fb_id
       "http://graph.facebook.com/#{fb_id}/picture?height=200"
@@ -52,6 +63,11 @@ class User < ActiveRecord::Base
 
   def num_friend_request
     self.unconfirmed_friend_requests.where(requested_to_id: self.id, confirmed: false).count()
+  end
+  
+
+  def self.confirmed(user_id, friend_id)
+    FriendRequest.where(user_id: user_id, requested_to_id: friend_id).first.confirmed
   end
 
   private
@@ -83,7 +99,6 @@ class User < ActiveRecord::Base
   end
 
   def set_fb_friends
-    p fb_friends_list
     if fb_friends_list
       user_ids = User.where(fb_id: fb_friends_list).collect(&:id)
       friend_ids = self.friends.collect(&:id)
@@ -91,7 +106,6 @@ class User < ActiveRecord::Base
       deleted_friends_ids = friend_ids - user_ids
       new_friend_ids.each do |friend_id|
         if Friendship.where(user_id: self.id, friend_id: friend_id).blank?
-          p "Create friends!"
           Friendship.create(user_id: self.id, friend_id: friend_id)
           Friendship.create(user_id: friend_id, friend_id: self.id)
         end

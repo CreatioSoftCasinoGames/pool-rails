@@ -1,6 +1,7 @@
 class Game < ActiveRecord::Base
 	belongs_to :club
 	belongs_to :user
+	has_many :game_requests
 	belongs_to :winner, class_name: "User"
 	before_create :set_winner_and_looser
 	attr_accessor :winner_token, :looser_token

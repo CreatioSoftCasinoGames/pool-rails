@@ -1,7 +1,6 @@
 class Api::V1::GamesController < Api::V1::ApplicationController
 
 	def create
-
     @game = Game.new(club_config_id: params[:club_config_id], winner_token: params[:winner_id], looser_token: params[:looser_id])
     if @game.save
       render json: @game 
@@ -21,10 +20,3 @@ class Api::V1::GamesController < Api::V1::ApplicationController
   end
 
 end
-
-# + User.fetch_by_login_token(@player_list)
-# @login = User.all.pluck(:login_token)
-#  @login.include? ('winner_id')
-#  if true
-#  	login_token == winner_id
-#  end
