@@ -66,8 +66,8 @@ class User < ActiveRecord::Base
   end
   
 
-  def confirm
-    FriendRequest.where(confirmed: params[:confirmed]).first
+  def self.confirmed(user_id, friend_id)
+    FriendRequest.where(user_id: user_id, requested_to_id: friend_id).first.confirmed
   end
 
   private

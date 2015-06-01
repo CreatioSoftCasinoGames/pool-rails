@@ -43,7 +43,7 @@ class Api::V1::UsersController < Api::V1::ApplicationController
 	def friend_request_sent
 		user_ids = @user.friend_requests_sent.where(confirmed: false).collect(&:id)
 		render :json => User.where(id: user_ids).as_json({
-      only: [:login_token, :device_avatar_id, :confirmed],
+      only: [:login_token, :device_avatar_id],
       methods: [:full_name, :image_url]
     }) 
 	end
@@ -84,8 +84,8 @@ class Api::V1::UsersController < Api::V1::ApplicationController
 	end
 
 	def delete_friend
-		# Friendship.where(user_id: @user.id, friend_id: User.fetch_by_login_token(params[:friend_token]).id).first.delete
-		# Friendship.where(user_id: User.fetch_by_login_token(params[:friend_token]).id, friend_id: @user.id).first.delete
+		Friendship.where(user_id: @user.id, friend_id: User.fetch_by_login_token(params[:friend_token]).id).first.delete
+		Friendship.where(user_id: User.fetch_by_login_token(params[:friend_token]).id, friend_id: @user.id).first.delete
 		render json: {
 			success: true
 		}
