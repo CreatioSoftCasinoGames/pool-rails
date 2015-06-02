@@ -4,7 +4,7 @@ class Api::V1::GiftRequestsController < Api::V1::ApplicationController
 
 	def create
 		is_asked = params[:is_asked].present? ? params[:is_asked] : false
-		@gift_request = current_user.gift_requests_sent.build(send_token: params[:send_to_token], gift_type: params[:gift_type], is_asked: is_asked)
+		@gift_request = current_user.gift_requests_sent.build(send_token: params[:send_to_token], gift_type: params[:gift_type], gift_value: params[:gift_value], is_asked: is_asked)
 		if @gift_request.save
 			render json: @gift_request
 		else
