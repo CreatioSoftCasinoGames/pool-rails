@@ -92,7 +92,7 @@ class User < ActiveRecord::Base
   def bot_login_details
     if is_dummy
       generated_password = SecureRandom.hex(9)
-      self.email = "bot_#{SecureRandom.hex(8)}@bingoapi.com"
+      self.email = "bot_#{SecureRandom.hex(8)}@poolapi.com"
       self.password = generated_password
       self.password_confirmation = generated_password
     end
@@ -111,8 +111,14 @@ class User < ActiveRecord::Base
         end
       end
       deleted_friends_ids.each do |deleted_friend_id|
-        Friendship.where(user_id: self.id, friend_id: deleted_friend_id).first.delete
-        Friendship.where(user_id: deleted_friend_id, friend_id: self.id).first.delete
+        if Friendship.where(user_id: self.id, friend_id: deleted_friend_id).first.blank?
+        else
+          Friendship.where(user_id: self.id, friend_id: deleted_friend_id).first.delete
+        end
+        if Friendship.where(user_id: deleted_friend_id, friend_id: self.id).first.blank?
+        else
+          Friendship.where(user_id: deleted_friend_id, friend_id: self.id).first.try.delete
+        end
       end
     end
   end

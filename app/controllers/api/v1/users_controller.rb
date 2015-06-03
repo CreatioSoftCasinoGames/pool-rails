@@ -41,7 +41,7 @@ class Api::V1::UsersController < Api::V1::ApplicationController
 
 
 	def friend_request_sent
-		user_ids = @user.friend_requests_sent.where(confirmed: false).collect(&:id)
+		user_ids = @user.friend_requests_sent.where(confirmed: false).collect(&:requested_to_id)
 		render :json => User.where(id: user_ids).as_json({
       only: [:login_token, :device_avatar_id],
       methods: [:full_name, :image_url]
@@ -49,7 +49,9 @@ class Api::V1::UsersController < Api::V1::ApplicationController
 	end
 
 	def my_friend_requests
-		user_ids = @user.unconfirmed_friend_requests.where(confirmed: false).collect(&:id)
+		p @user.unconfirmed_friend_requests.where(confirmed: false)
+		user_ids = @user.unconfirmed_friend_requests.where(confirmed: false).collect(&:user_id)
+		p user_ids
 		render :json => User.where(id: user_ids).as_json({
       only: [:login_token, :device_avatar_id],
       methods: [:full_name, :image_url]
