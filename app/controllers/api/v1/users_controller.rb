@@ -41,21 +41,39 @@ class Api::V1::UsersController < Api::V1::ApplicationController
 
 
 	def friend_request_sent
-		user_ids = @user.friend_requests_sent.where(confirmed: false).collect(&:requested_to_id)
-		render :json => User.where(id: user_ids).as_json({
-      only: [:login_token, :device_avatar_id],
-      methods: [:full_name, :image_url]
-    }) 
+    @requests_sent = @user.friend_requests_sent.collect do |friend_request|
+    	@user = User.find(friend_request.requested_to_id)
+    	{
+	    	id: friend_request.id,
+	    	user_login_token: User.find(friend_request.user_id).login_token,
+	    	requested_token: @user.login_token,
+	    	device_avatar_id: @user.device_avatar_id,
+	    	full_name: @user.full_name,
+	    	image_url: @user.image_url
+	    }
+    end
+    render json: @requests_sent
 	end
 
 	def my_friend_requests
-		p @user.unconfirmed_friend_requests.where(confirmed: false)
-		user_ids = @user.unconfirmed_friend_requests.where(confirmed: false).collect(&:user_id)
-		p user_ids
-		render :json => User.where(id: user_ids).as_json({
-      only: [:login_token, :device_avatar_id],
-      methods: [:full_name, :image_url]
-    }) 
+		# user_ids = @user.unconfirmed_friend_requests.where(confirmed: false).collect(&:user_id)
+		# render :json => User.where(id: user_ids).as_json({
+  #     only: [:login_token, :device_avatar_id],
+  #     methods: [:full_name, :image_url]
+  #   }) 
+    @requests_sent = @user.unconfirmed_friend_requests.collect do |friend_request|
+    	@user = User.find(friend_request.user_id)
+    	p @user
+    	{
+	    	id: friend_request.id,
+	    	user_login_token: User.find(friend_request.requested_to_id).login_token,
+	    	requested_token: @user.login_token,
+	    	device_avatar_id: @user.device_avatar_id,
+	    	full_name: @user.full_name,
+	    	image_url: @user.image_url
+	    }
+    end
+    render json: @requests_sent
 	end
 
 	def my_friends

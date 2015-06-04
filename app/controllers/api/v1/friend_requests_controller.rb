@@ -17,15 +17,16 @@ class Api::V1::FriendRequestsController < Api::V1::ApplicationController
 	end
 
 	def update
-		if @friend_request.update_attributes(friend_request_params)
-			render json: @friend_request
-		else
-			render json: {
-				errors: @friend_request.errors.full_messages.join,
-				success: false
-			}
-		end
-	end
+    if @friend_request.update_attributes(friend_request_params)
+      render json: @friend_request
+    else
+      render json: {
+        errors: @friend_request.errors.full_messages.join,
+        success: false
+      }
+    end
+  end
+
 
 	def destroy
 		@friend_request.destroy
@@ -42,16 +43,16 @@ class Api::V1::FriendRequestsController < Api::V1::ApplicationController
 	private
 
 	def current_user
-		User.find_by_login_token(params[:login_token])
-	end
+    User.find_by_login_token(params[:login_token])
+  end
 
-	def friend_request_params
-		params.require(:friend_request).permit(:confirmed)
-	end
+  def friend_request_params
+    params.require(:friend_request).permit(:confirmed)
+  end
 
-	def get_friend_requests
-		@friend_request = FriendRequest.where(id: params[:id]).first
-		(render json: {message: "Friend request not found!", success: false}) if @friend_request.blank?
-	end
+  def get_friend_requests
+    @friend_request = FriendRequest.where(id: params[:id]).first
+    (render json: {message: "Friend request not found!", success: false}) if @friend_request.blank?
+  end
 
 end
