@@ -62,12 +62,12 @@ class GiftRequest < ActiveRecord::Base
 	end
 
 	def credit_gift
-		# if self.changes.include?(:confirmed)
-		# 	if gift_type == "coins"
-		# 		total_coins_won = reciever.coins + total_coins_won
-		# 		self.reciever.update_attributes(coins: gift_coins)
-		# 	end
-		# end
+		if self.changes.include?(:confirmed)
+			if gift_type == "coins"
+				gift_coins = reciever.current_coins_balance + gift_value
+				self.reciever.update_attributes(current_coins_balance: gift_coins)
+			end
+		end
 	end
 
 end

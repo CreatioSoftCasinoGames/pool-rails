@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150530044008) do
+ActiveRecord::Schema.define(version: 20150605130938) do
 
   create_table "api_keys", force: true do |t|
     t.string   "token"
@@ -154,13 +154,13 @@ ActiveRecord::Schema.define(version: 20150530044008) do
     t.string   "achievement"
     t.decimal  "current_coins_balance",              precision: 10, scale: 0, default: 1000
     t.boolean  "is_dummy",                                                    default: false
-    t.string   "device_avtar_id"
     t.decimal  "total_time_in_game",                 precision: 10, scale: 0, default: 0
     t.integer  "total_games_played",                                          default: 0
     t.binary   "flag"
     t.float    "strike_count",            limit: 24,                          default: 0.0
     t.integer  "device_avatar_id",                                            default: 0
     t.boolean  "is_fb_connected",                                             default: false
+    t.string   "user_pool_id"
   end
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree

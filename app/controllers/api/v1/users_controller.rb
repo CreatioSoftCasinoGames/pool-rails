@@ -1,6 +1,6 @@
 class Api::V1::UsersController < Api::V1::ApplicationController
 
-	before_action :find_user, only: [:show, :update, :my_friend_requests, :friend_request_sent, :my_friends, :sent_gift, :received_gift, :ask_for_gift_to, :ask_for_gift_by, :delete_friend]
+	before_action :find_user, only: [:show, :update, :my_friend_requests, :connect_facebook, :disconnect_facebook, :friend_request_sent, :my_friends, :sent_gift, :received_gift, :ask_for_gift_to, :ask_for_gift_by, :delete_friend]
 
 	def create
 		@user = User.new(email: params[:email], password: params[:password], password_confirmation: params[:password], first_name: params[:first_name], last_name: params[:last_name], fb_id: params[:fb_id])
@@ -63,7 +63,6 @@ class Api::V1::UsersController < Api::V1::ApplicationController
   #   }) 
     @requests_sent = @user.unconfirmed_friend_requests.collect do |friend_request|
     	@user = User.find(friend_request.user_id)
-    	p @user
     	{
 	    	id: friend_request.id,
 	    	user_login_token: User.find(friend_request.requested_to_id).login_token,
@@ -123,10 +122,49 @@ class Api::V1::UsersController < Api::V1::ApplicationController
 		render json: @user = User.where(login_token:(params[:opponent_id])).first
 	end
 
+	def connect_facebook
+		@fb_user = User.where(fb_id: params[:fb_id]).first
+		if @fb_user.present?
+			if @fb_user.update_attributes(fb_id: nil, is_fb_connected: false)
+				@message = "Allready loged in user."
+				@login_token = @fb_user.login_token
+			else
+				@success = false,
+				@errors = @fb_user.errors.full_messages.join(", ")
+			end
+		end
+		if @user.update_attributes(fb_id: params[:fb_id], is_fb_connected: true, fb_friends_list: params[:fb_friends_list])
+			@success = true
+		else
+			@success = false,
+			@errors = @user.errors.full_messages.join(", ")
+		end
+		render json: {
+			success: @success,
+			message: @message,
+			login_token: @login_token,
+			errors: @errors
+		}
+	end
+
+	def disconnect_facebook
+		if @user.update_attributes(fb_id: nil, is_fb_connected: false)
+			render json: {
+				success: true,
+				message: "Successfully disconneted from facebook."
+			}
+		else
+			render json: {
+				success: false,
+				errors: @user.errors.full_messages.join(", ")
+			}
+		end
+	end
+
 	private
 
 	def user_params
-		params.require(:user).permit(:first_name, :last_name, :password, :chips, :password_confirmation, :device_avatar_id, :won_count, :lost_count, :rank, :total_coins_won, :win_percentage, :total_tournament_won, :total_tournament_played, :win_streak, :ball_potted, :accuracy, :xp, :current_level, :country, :achievement, :current_coins_balance, :total_games_played, :flag)
+		params.require(:user).permit(:first_name, :last_name, :password, :chips, :password_confirmation, :device_avatar_id, :won_count, :lost_count, :rank, :total_coins_won, :win_percentage, :total_tournament_won, :total_tournament_played, :win_streak, :ball_potted, :accuracy, :xp, :current_level, :country, :achievement, :current_coins_balance, :total_games_played, :flag, :user_pool_id)
 	end
 
 	def find_user

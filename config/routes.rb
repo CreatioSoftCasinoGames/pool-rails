@@ -39,6 +39,8 @@ Rails.application.routes.draw do
           get :received_gift
           get :ask_for_gift_to
           get :ask_for_gift_by
+          put :connect_facebook
+          put :disconnect_facebook
         end
       end
     end

@@ -42,7 +42,7 @@ class Api::V1::GiftRequestsController < Api::V1::ApplicationController
 	private
 
 	def gift_request_params
-		params.require(:gift_request).permit(:confirmed, :is_asked)
+		params.require(:gift_request).permit(:confirmed, :is_asked, :gift_value)
 	end
 
 	def get_gift_request
