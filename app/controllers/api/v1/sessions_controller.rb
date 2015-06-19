@@ -51,8 +51,8 @@ class Api::V1::SessionsController < Api::V1::ApplicationController
 			# login_token = @user.id
 			if @user.update_attributes(login_token: login_token, online: true, login_histories_attributes: {id: nil, active: true, login_token: login_token })
 				render json: @user.as_json({
-					only: [ :id, :current_level, :xp, :login_token, :current_coins_balance, :device_id, :is_dummy, :device_avatar_id
-					      ],
+					only: [ :id, :current_level, :xp, :login_token, :current_coins_balance, :device_id, :is_dummy, :device_avatar_id,
+						:won_count, :total_games_played, :total_tournament_won, :total_tournament_played],
           methods: [:full_name, :image_url]
 					}) 
 			else
