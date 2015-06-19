@@ -17,7 +17,7 @@ class UtilityController < ApplicationController
 		end
 
 		REDIS_CLIENT.SADD("club_configs", "club_config:#{club_config.id}")
-			REDIS_CLIENT.HMSET("club_config:#{club_config.id}", "name", club_config.name, "club_type", club_config.club_type);		
+			REDIS_CLIENT.HMSET("club_config:#{club_config.id}", "name", club_config.name, "club_type", club_config.club_type, "winner_amount", club_config.winner_amount, "winner_xp", club_config.winner_xp, "looser_xp", club_config.looser_xp, "entry_fees", club_config.entry_fees);		
 			club_config.clubs.each do |club|
 			  @club_type =  ClubConfig.where(id:  Club.where(id: club.id).pluck(:club_config_id)).pluck(:club_type)
 				REDIS_CLIENT.SADD("clubs","club:#{club.id}")
