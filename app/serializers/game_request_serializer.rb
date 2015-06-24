@@ -1,5 +1,5 @@
 class GameRequestSerializer < ActiveModel::Serializer
-	attributes :id
+	attributes :id,
 						 :user_login_token,
 	           :requested_token,
 	           :invitation_type,

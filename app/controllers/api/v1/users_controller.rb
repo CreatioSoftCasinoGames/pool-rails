@@ -71,10 +71,17 @@ class Api::V1::UsersController < Api::V1::ApplicationController
 	end
 
 	def my_friends
-		render json: @user.friends.as_json({
-			only: [:login_token, :online],
-			methods: [:full_name, :image_url]
-		})
+		if @user.is_fb_connected
+			render json: @user.friends.as_json({
+				only: [:login_token, :online],
+				methods: [:full_name, :image_url]
+			})
+		else
+			render json: @user.friends.where(friend_type: "buddy").as_json({
+				only: [:login_token, :online],
+				methods: [:full_name, :image_url]
+			})
+		end
 	end
 
 	def send_in_game_gift
