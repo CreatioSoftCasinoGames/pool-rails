@@ -109,7 +109,8 @@ class User < ActiveRecord::Base
       new_friend_ids.each do |friend_id|
         if Friendship.where(user_id: self.id, friend_id: friend_id).blank?
           Friendship.create(user_id: self.id, friend_id: friend_id)
-          Friendship.create(user_id: friend_id, friend_id: self.id)
+          Friendship.create(user_id: friend_id, friend_id: self.id) 
+          REDIS_CLIENT.PUBLISH("friend_added", {publish_type: "friend_added", login_token: User.find(self.id).login_token, friend_tokne: User.find(friend_id).login_token}.to_json)
         end
       end
       deleted_friends_ids.each do |deleted_friend_id|
