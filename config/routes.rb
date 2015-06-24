@@ -41,6 +41,7 @@ Rails.application.routes.draw do
           get :ask_for_gift_by
           put :connect_facebook
           put :disconnect_facebook
+          get :my_revenge_list
         end
       end
     end

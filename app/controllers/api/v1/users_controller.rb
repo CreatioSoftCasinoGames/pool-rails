@@ -1,6 +1,6 @@
 class Api::V1::UsersController < Api::V1::ApplicationController
 
-	before_action :find_user, only: [:show, :update, :my_friend_requests, :connect_facebook, :disconnect_facebook, :friend_request_sent, :my_friends, :sent_gift, :received_gift, :ask_for_gift_to, :ask_for_gift_by, :delete_friend]
+	before_action :find_user, only: [:show, :update, :my_friend_requests, :my_revenge_list, :connect_facebook, :disconnect_facebook, :friend_request_sent, :my_friends, :sent_gift, :received_gift, :ask_for_gift_to, :ask_for_gift_by, :delete_friend]
 
 	def create
 		@user = User.new(email: params[:email], password: params[:password], password_confirmation: params[:password], first_name: params[:first_name], last_name: params[:last_name], fb_id: params[:fb_id])
@@ -56,12 +56,7 @@ class Api::V1::UsersController < Api::V1::ApplicationController
 	end
 
 	def my_friend_requests
-		# user_ids = @user.unconfirmed_friend_requests.where(confirmed: false).collect(&:user_id)
-		# render :json => User.where(id: user_ids).as_json({
-  #     only: [:login_token, :device_avatar_id],
-  #     methods: [:full_name, :image_url]
-  #   }) 
-    @requests_sent = @user.unconfirmed_friend_requests.collect do |friend_request|
+    @requests_received = @user.unconfirmed_friend_requests.collect do |friend_request|
     	@user = User.find(friend_request.user_id)
     	{
 	    	id: friend_request.id,
@@ -72,7 +67,7 @@ class Api::V1::UsersController < Api::V1::ApplicationController
 	    	image_url: @user.image_url
 	    }
     end
-    render json: @requests_sent
+    render json: @requests_received
 	end
 
 	def my_friends
@@ -159,6 +154,29 @@ class Api::V1::UsersController < Api::V1::ApplicationController
 				errors: @user.errors.full_messages.join(", ")
 			}
 		end
+	end
+
+	def my_revenge_list
+		@revenges_received = @user.unaccepted_revenge_requests.where(invitation_type: params[:invitation_type]).collect do |revenge_request|
+    	@requested_user = User.find(revenge_request.user_id)
+    	{
+	    	id: revenge_request.id,
+	    	invitation_type: revenge_request.invitation_type,
+	    	accepted: revenge_request.accepted,
+	    	user_login_token: @requested_user.login_token,
+	    	requested_token: User.find(revenge_request.requested_to).login_token,
+	    	full_name: @requested_user.full_name,
+	    	image_url: @requested_user.image_url
+	    }
+    end
+    @revenges_sent = @user.revenges_sent.where(accepted: false, invitation_type: params[:invitation_type]).as_json({
+    	only: [:id, :invitation_type, :accepted],
+    	methods: [:user_login_token, :requested_token, :full_name, :image_url]
+    })	
+		render json: {
+			requests_sent: @revenges_sent,
+			requests_received: @revenges_received
+		}
 	end
 
 	private

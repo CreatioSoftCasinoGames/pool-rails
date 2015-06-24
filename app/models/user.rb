@@ -15,7 +15,9 @@ class User < ActiveRecord::Base
   has_many :gift_requests_sent, :dependent => :destroy, class_name: "GiftRequest", foreign_key: "user_id"
   has_many :unconfirmed_gift_requests, -> { where(confirmed: false) }, class_name: "GiftRequest", foreign_key: "send_to_id"
   has_many :games
-  has_many :game_requests
+  has_many :game_requests, :dependent => :destroy, foreign_key: "requested_to"
+  has_many :revenges_sent, :dependent => :destroy, foreign_key: "user_id", class_name: "GameRequest"
+  has_many :unaccepted_revenge_requests, -> { where(accepted: false) }, foreign_key: "requested_to", class_name: "GameRequest"
 
   before_validation  :set_fb_password, :set_guest_login_details, :set_fb_friends
 
@@ -117,7 +119,7 @@ class User < ActiveRecord::Base
         end
         if Friendship.where(user_id: deleted_friend_id, friend_id: self.id).first.blank?
         else
-          Friendship.where(user_id: deleted_friend_id, friend_id: self.id).first.try.delete
+          Friendship.where(user_id: deleted_friend_id, friend_id: self.id).first.delete
         end
       end
     end
