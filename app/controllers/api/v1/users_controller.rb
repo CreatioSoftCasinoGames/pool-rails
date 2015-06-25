@@ -1,6 +1,6 @@
 class Api::V1::UsersController < Api::V1::ApplicationController
 
-	before_action :find_user, only: [:show, :update, :my_friend_requests, :my_revenge_list, :connect_facebook, :disconnect_facebook, :friend_request_sent, :my_friends, :sent_gift, :received_gift, :ask_for_gift_to, :ask_for_gift_by, :delete_friend]
+	before_action :find_user, only: [:show, :update, :winner_list, :my_friend_requests, :my_revenge_list, :connect_facebook, :disconnect_facebook, :friend_request_sent, :my_friends, :sent_gift, :received_gift, :ask_for_gift_to, :ask_for_gift_by, :delete_friend]
 
 	def create
 		@user = User.new(email: params[:email], password: params[:password], password_confirmation: params[:password], first_name: params[:first_name], last_name: params[:last_name], fb_id: params[:fb_id])
@@ -73,13 +73,12 @@ class Api::V1::UsersController < Api::V1::ApplicationController
 	def my_friends
 		if @user.is_fb_connected
 			render json: @user.friends.as_json({
-				only: [:login_token, :online],
+				only: [:login_token, :online, :device_avatar_id],
 				methods: [:full_name, :image_url]
 			})
 		else
-			render json: @user.friends.where(friend_type: "buddy").as_json({
-				only: [:login_token, :online],
-				methods: [:full_name, :image_url]
+			render json: @user.buddy_friends.as_json({
+				methods: [:full_name, :image_url, :login_token, :online, :device_avtar_id]
 			})
 		end
 	end
@@ -111,6 +110,20 @@ class Api::V1::UsersController < Api::V1::ApplicationController
 			success: true
 		}
 	end
+
+	def winner_list
+		winner_users = @user.winners.limit(20).collect do |winner|
+			{
+				login_token: winner.login_token,
+				online: winner.online,
+				full_name: winner.full_name,
+				image_url: winner.image_url,
+				can_send_revenge: @user.is_ask_for_revenge(winner.id),
+				time_remaining: @user.ask_for_revenge_in(winner.id)
+			}
+		end
+		render json: winner_users
+	end
 	
 	def show
 		unless api_current_user.blank?
@@ -127,7 +140,7 @@ class Api::V1::UsersController < Api::V1::ApplicationController
 	def connect_facebook
 		@fb_user = User.where(fb_id: params[:fb_id]).first
 		if @fb_user.present?
-			if @fb_user.update_attributes(fb_id: nil, is_fb_connected: false)
+			if @fb_user.update_attributes(fb_id: nil, is_fb_connected: false, first_name: "Guest", last_name: "User")
 				@message = "Allready loged in user."
 				@login_token = @fb_user.login_token
 			else
@@ -135,7 +148,7 @@ class Api::V1::UsersController < Api::V1::ApplicationController
 				@errors = @fb_user.errors.full_messages.join(", ")
 			end
 		end
-		if @user.update_attributes(fb_id: params[:fb_id], is_fb_connected: true, fb_friends_list: params[:fb_friends_list])
+		if @user.update_attributes(fb_id: params[:fb_id], is_fb_connected: true, fb_friends_list: params[:fb_friends_list], first_name: params[:first_name], last_name: params[:last_name])
 			@success = true
 		else
 			@success = false,
@@ -150,7 +163,7 @@ class Api::V1::UsersController < Api::V1::ApplicationController
 	end
 
 	def disconnect_facebook
-		if @user.update_attributes(fb_id: nil, is_fb_connected: false)
+		if @user.update_attributes(is_fb_connected: false)
 			render json: {
 				success: true,
 				message: "Successfully disconneted from facebook."
@@ -176,12 +189,7 @@ class Api::V1::UsersController < Api::V1::ApplicationController
 	    	image_url: @requested_user.image_url
 	    }
     end
-    @revenges_sent = @user.revenges_sent.where(accepted: false, invitation_type: params[:invitation_type]).as_json({
-    	only: [:id, :invitation_type, :accepted],
-    	methods: [:user_login_token, :requested_token, :full_name, :image_url]
-    })	
 		render json: {
-			requests_sent: @revenges_sent,
 			requests_received: @revenges_received
 		}
 	end

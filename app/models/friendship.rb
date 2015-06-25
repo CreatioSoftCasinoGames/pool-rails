@@ -5,14 +5,22 @@ class Friendship < ActiveRecord::Base
 	validate :find_user, on: :create
 	validate :friend_user, on: :create
 	validate :valid_friend
-	attr_accessor :user_token, :friend_token
+	attr_accessor :user_token, :friends_token
 
 	def full_name
-		[user.first_name, user.last_name].join(" ")
+		[friend.first_name, friend.last_name].join(" ")
 	end
 
 	def device_avtar_id
-		user.device_avtar_id
+		friend.device_avatar_id
+	end
+
+	def login_token
+		friend.login_token
+	end
+
+	def image_url
+		friend.image_url
 	end
 
 	def friend_token
@@ -29,7 +37,7 @@ class Friendship < ActiveRecord::Base
 
 	def find_user
 		if user_token
-			user_request = User.fetch_by_login_token(login_token)
+			user_request = User.fetch_by_login_token(user_token)
 			if user_request.present?
 				self.user_id = user_request.id
 			else
@@ -39,8 +47,8 @@ class Friendship < ActiveRecord::Base
 	end
 
 	def friend_user
-		if friend_token
-			friend_user = User.fetch_by_login_token(friend_token)
+		if friends_token
+			friend_user = User.fetch_by_login_token(friends_token)
 			if friend_user.present?
 				self.friend_id = friend_user.id
 			else

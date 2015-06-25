@@ -6,6 +6,7 @@ class GiftRequest < ActiveRecord::Base
 	validate :send_once, on: :create
 	validate :max_send, on: :create
 	validate :credit_gift
+	after_create :publish_gift
 
 	belongs_to :reciever, class_name: "User", foreign_key: "send_to_id"
 
@@ -68,6 +69,10 @@ class GiftRequest < ActiveRecord::Base
 				self.reciever.update_attributes(current_coins_balance: gift_coins)
 			end
 		end
+	end
+
+	def publish_gift
+		REDIS_CLIENT.PUBLISH("gift_request", {request_type: "gift_request", login_token: user.login_token, send_to_token: send_token})
 	end
 
 end

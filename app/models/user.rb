@@ -15,6 +15,8 @@ class User < ActiveRecord::Base
   has_many :gift_requests_sent, :dependent => :destroy, class_name: "GiftRequest", foreign_key: "user_id"
   has_many :unconfirmed_gift_requests, -> { where(confirmed: false) }, class_name: "GiftRequest", foreign_key: "send_to_id"
   has_many :games
+  has_many :winners, class_name: "Game", foreign_key: "looser_id"
+  has_many :buddy_friends, -> { where(friend_type: "buddy") }, class_name: "Friendship", foreign_key: "user_id"
   has_many :game_requests, :dependent => :destroy, foreign_key: "requested_to"
   has_many :revenges_sent, :dependent => :destroy, foreign_key: "user_id", class_name: "GameRequest"
   has_many :unaccepted_revenge_requests, -> { where(accepted: false) }, foreign_key: "requested_to", class_name: "GameRequest"
@@ -38,7 +40,6 @@ class User < ActiveRecord::Base
   def avatar
     self.image? ? image.url(:avatar) : nil
   end
-  
 
   def player_since
     created_at.strftime("%B,%Y")
@@ -70,6 +71,24 @@ class User < ActiveRecord::Base
 
   def self.confirmed(user_id, friend_id)
     FriendRequest.where(user_id: user_id, requested_to_id: friend_id).first.confirmed
+  end
+
+  def is_ask_for_revenge(winner_id)
+    revenge_sent = revenges_sent.where(game_requests: {requested_to: winner_id}).last
+    if revenge_sent.present?
+      revenge_sent.created_at < Time.now - 24.hours
+    else
+      true
+    end
+  end
+
+  def ask_for_revenge_in(winner_id)
+    revenge_sent = revenges_sent.where(requested_to: winner_id).last
+    if revenge_sent.present?
+      revenge_sent.created_at - Time.now + 24.hours
+    else
+      0
+    end
   end
 
   private
@@ -113,13 +132,11 @@ class User < ActiveRecord::Base
         end
       end
       deleted_friends_ids.each do |deleted_friend_id|
-        if Friendship.where(user_id: self.id, friend_id: deleted_friend_id).first.blank?
-        else
-          Friendship.where(user_id: self.id, friend_id: deleted_friend_id).first.delete
-        end
-        if Friendship.where(user_id: deleted_friend_id, friend_id: self.id).first.blank?
-        else
-          Friendship.where(user_id: deleted_friend_id, friend_id: self.id).first.delete
+        friend = Friendship.where(user_id: self.id, friend_id: deleted_friend_id, friend_type: "fb").first
+        friend1 = Friendship.where(user_id: deleted_friend_id, friend_id: self.id, friend_type: "fb").first
+        if friend.present?
+          friend.delete
+          friend1.delete
         end
       end
     end
