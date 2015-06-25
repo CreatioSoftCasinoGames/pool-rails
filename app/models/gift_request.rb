@@ -72,7 +72,7 @@ class GiftRequest < ActiveRecord::Base
 	end
 
 	def publish_gift
-		REDIS_CLIENT.PUBLISH("gift_request", {request_type: "gift_request", login_token: user.login_token, send_to_token: send_token})
+		REDIS_CLIENT.PUBLISH("gift_received", {id: id, request_type: "gift_received", login_token: user.login_token, send_to_token: send_token, full_name: full_name, gift_type: gift_type, gift_value: gift_value, confirmed: confirmed, image_url: image_url})
 	end
 
 end
