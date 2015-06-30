@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150530044008) do
+ActiveRecord::Schema.define(version: 20150624120807) do
 
   create_table "api_keys", force: true do |t|
     t.string   "token"
@@ -63,20 +63,19 @@ ActiveRecord::Schema.define(version: 20150530044008) do
   end
 
   create_table "friend_requests", force: true do |t|
+    t.integer  "user_id"
     t.integer  "requested_to_id"
     t.boolean  "confirmed",       default: false
-    t.integer  "user_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
-
-  add_index "friend_requests", ["user_id"], name: "index_friend_requests_on_user_id", using: :btree
 
   create_table "friendships", force: true do |t|
     t.integer  "user_id"
     t.integer  "friend_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "friend_type", default: "fb"
   end
 
   create_table "game_requests", force: true do |t|
@@ -86,6 +85,7 @@ ActiveRecord::Schema.define(version: 20150530044008) do
     t.boolean  "accepted"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "club_config_id"
   end
 
   create_table "games", force: true do |t|
@@ -159,6 +159,7 @@ ActiveRecord::Schema.define(version: 20150530044008) do
     t.float    "strike_count",            limit: 24,                          default: 0.0
     t.integer  "device_avatar_id",                                            default: 0
     t.boolean  "is_fb_connected",                                             default: false
+    t.string   "user_pool_id"
   end
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree

@@ -22,24 +22,6 @@ class FriendRequest < ActiveRecord::Base
 	def full_name
     [user.first_name, user.last_name].join(" ")
   end
-  
- #  def user_name
- #  	if user.first_name.blank? && user.last_name.blank?
- #  		"Guest User"
- #  	else
- #  		[user.first_name, user.last_name].join(" ")
- #  	end
-	# end
-
-	# def opponent_name
-	# 	if requested_to.first_name.blank? && requested_to.last_name.blank?
- #  		"Guest User"
- #  	else
- #  		[requested_to.first_name, requested_to.last_name].join(" ")
-  		
- #  	end
-	# end
-
 
 	private
 

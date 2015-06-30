@@ -25,6 +25,7 @@ Rails.application.routes.draw do
       resources :club_configs
       resources :users
       resources :friend_requests
+      resources :friendships
       resources :gift_requests
       resources :sessions, only: [:create, :destroy]
       resources :clubs
@@ -39,6 +40,10 @@ Rails.application.routes.draw do
           get :received_gift
           get :ask_for_gift_to
           get :ask_for_gift_by
+          put :connect_facebook
+          put :disconnect_facebook
+          get :my_revenge_list
+          get :winner_list
         end
       end
     end

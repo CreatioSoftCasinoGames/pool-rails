@@ -4,7 +4,7 @@ class Api::V1::GiftRequestsController < Api::V1::ApplicationController
 
 	def create
 		is_asked = params[:is_asked].present? ? params[:is_asked] : false
-		@gift_request = current_user.gift_requests_sent.build(send_token: params[:send_to_token], gift_type: params[:gift_type], is_asked: is_asked)
+		@gift_request = current_user.gift_requests_sent.build(send_token: params[:send_to_token], gift_type: params[:gift_type], gift_value: params[:gift_value], is_asked: is_asked)
 		if @gift_request.save
 			render json: @gift_request
 		else
@@ -19,9 +19,13 @@ class Api::V1::GiftRequestsController < Api::V1::ApplicationController
 		if @gift_request.update_attributes(gift_request_params)
 			render json: @gift_request
 		else
-			render json: @gift_request.errors.full_messages.join(", ")
+			render json: {
+				errors: @gift_request.errors.full_messages.join(", "),
+				success: false
+			}
 		end
 	end
+
 
 	def destroy
 		@gift_request.destroy
@@ -38,7 +42,7 @@ class Api::V1::GiftRequestsController < Api::V1::ApplicationController
 	private
 
 	def gift_request_params
-		params.require(:gift_request).permit(:confirmed)
+		params.require(:gift_request).permit(:confirmed, :is_asked, :gift_value)
 	end
 
 	def get_gift_request

@@ -3,11 +3,14 @@ class Api::V1::FriendshipsController < Api::V1::ApplicationController
 	#skip_before_filter :authenticate_user
 	
 	def create
-		@friend = Friendship.save(friend_params)
+		@friend = Friendship.new(user_token: params[:login_token], friends_token: params[:friend_token], friend_type: "buddy")
 		if @friend.save
-			render json: @friend
+			render json: {
+				success: true
+			}
 		else
 			render json: {
+				success: false,
 				errors: @friend.errors.full_messages.join
 			}
 		end

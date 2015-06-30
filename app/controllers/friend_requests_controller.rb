@@ -41,7 +41,7 @@ class Api::V1::FriendRequestsController < Api::V1::ApplicationController
   private
 
   def current_user
-    User.find_by_login_token(params[:login_token])
+    User.fetch_by_login_token(params[:login_token])
   end
 
   def friend_request_params

@@ -6,6 +6,7 @@ class GiftRequest < ActiveRecord::Base
 	validate :send_once, on: :create
 	validate :max_send, on: :create
 	validate :credit_gift
+	after_create :publish_gift
 
 	belongs_to :reciever, class_name: "User", foreign_key: "send_to_id"
 
@@ -63,18 +64,15 @@ class GiftRequest < ActiveRecord::Base
 
 	def credit_gift
 		if self.changes.include?(:confirmed)
-			
 			if gift_type == "coins"
-				# total_coins_won = reciever.coins + total_coins_won
-				# # self.reciever.update_attributes(coins: gift_coins)
-				# elsif gift_type == "tickets"
-				# 	tickets = reciever.ticket_bought + gift_value
-				# 	self.reciever.update_attributes(ticket_bought: tickets)
-				# elsif gift_type == "powerups"
-				# 	powerups = reciever.powerups_remaining + gift_value
-				# 	self.reciever.update_attributes(powerups_remaining: powerups)
+				gift_coins = reciever.current_coins_balance + gift_value
+				self.reciever.update_attributes(current_coins_balance: gift_coins)
 			end
 		end
+	end
+
+	def publish_gift
+		REDIS_CLIENT.PUBLISH("gift_received", {id: id, request_type: "gift_received", login_token: user.login_token, send_to_token: send_token, full_name: full_name, gift_type: gift_type, gift_value: gift_value, confirmed: confirmed, image_url: image_url})
 	end
 
 end
