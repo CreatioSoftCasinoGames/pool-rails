@@ -80,15 +80,10 @@ ActiveRecord::Schema.define(version: 20150530044008) do
   end
 
   create_table "game_requests", force: true do |t|
-<<<<<<< HEAD
-=======
-    t.integer  "user_id"
-    t.integer  "game_id"
->>>>>>> d4420a44f1805ba5efaaff36c39345681e5969cc
     t.string   "requested_from"
     t.string   "requested_to"
     t.string   "invitation_type"
-    t.boolean  "accepted",        default: false
+    t.boolean  "accepted"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
