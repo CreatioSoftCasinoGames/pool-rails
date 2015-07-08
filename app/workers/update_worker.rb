@@ -4,9 +4,7 @@ class UpdateWorker
 	sidekiq_options retry: false
 
 	def perform(data)
-		# p data
 		profile_data = JSON.parse(data)
-		p profile_data
 		k = profile_data["id"]
 		user = User.fetch_by_login_token(profile_data["id"])
 
