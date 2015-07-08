@@ -63,12 +63,14 @@ ActiveRecord::Schema.define(version: 20150624120807) do
   end
 
   create_table "friend_requests", force: true do |t|
-    t.integer  "user_id"
     t.integer  "requested_to_id"
     t.boolean  "confirmed",       default: false
+    t.integer  "user_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  add_index "friend_requests", ["user_id"], name: "index_friend_requests_on_user_id", using: :btree
 
   create_table "friendships", force: true do |t|
     t.integer  "user_id"
@@ -79,10 +81,10 @@ ActiveRecord::Schema.define(version: 20150624120807) do
   end
 
   create_table "game_requests", force: true do |t|
-    t.string   "requested_from"
-    t.string   "requested_to"
+    t.integer  "user_id"
+    t.integer  "requested_to"
     t.string   "invitation_type"
-    t.boolean  "accepted"
+    t.boolean  "accepted",        default: false
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "club_config_id"

@@ -16,10 +16,12 @@ class UtilityController < ApplicationController
 		  REDIS_CLIENT.SADD("tournament_room_players", "onlinePlayer:#{club_config.id}")
 		end
 
+		# REDIS_CLIENT.SADD("club_config_players", "club_config_player:#{club_config.id}")
 		REDIS_CLIENT.SADD("club_configs", "club_config:#{club_config.id}")
 			REDIS_CLIENT.HMSET("club_config:#{club_config.id}", "name", club_config.name, "club_type", club_config.club_type, "winner_amount", club_config.winner_amount, "winner_xp", club_config.winner_xp, "looser_xp", club_config.looser_xp, "entry_fees", club_config.entry_fees);		
 			club_config.clubs.each do |club|
-			  @club_type =  ClubConfig.where(id:  Club.where(id: club.id).pluck(:club_config_id)).pluck(:club_type)
+			  @club_type =  ClubConfig.where(id: Club.where(id: club.id).pluck(:club_config_id)).pluck(:club_type)
+			  @club_type = @club_type[0];
 				REDIS_CLIENT.SADD("clubs","club:#{club.id}")
 				REDIS_CLIENT.SADD("club_config_clubs:#{club.club_config_id}", "club:#{club.id}")
 				REDIS_CLIENT.ZADD("club_config_occupancy:#{club.club_config_id}", 0, "club:#{club.id}")
