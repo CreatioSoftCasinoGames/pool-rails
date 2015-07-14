@@ -104,11 +104,20 @@ class Api::V1::UsersController < Api::V1::ApplicationController
 	end
 
 	def delete_friend
-		Friendship.where(user_id: @user.id, friend_id: User.fetch_by_login_token(params[:friend_token]).id).first.delete
-		Friendship.where(user_id: User.fetch_by_login_token(params[:friend_token]).id, friend_id: @user.id).first.delete
-		render json: {
-			success: true
-		}
+		@friend = Friendship.where(user_id: @user.id, friend_id: User.fetch_by_login_token(params[:friend_token]).id).first
+		if @friend.friend_type == "buddy"
+			if @friend.delete
+				render json: {success: true}
+			else
+				render json: {success: false}
+			end
+		else
+			@friend.delete
+			Friendship.where(user_id: User.fetch_by_login_token(params[:friend_token]).id, friend_id: @user.id).first.delete
+			render json: {
+				success: true
+			}
+		end
 	end
 
 	def winner_list

@@ -5,6 +5,7 @@ class Friendship < ActiveRecord::Base
 	validate :find_user, on: :create
 	validate :friend_user, on: :create
 	validate :valid_friend
+	after_create :publish_friend
 	attr_accessor :user_token, :friends_token
 
 	def full_name
@@ -61,6 +62,10 @@ class Friendship < ActiveRecord::Base
 		if Friendship.where(user_id: self.user_id, friend_id: self.friend_id).present?
 			self.errors.add(:base, "Already added")
 		end
+	end
+
+	def publish_friend
+		REDIS_CLIENT.PUBLISH("friend_added", {publish_type: "friend_added", login_token: User.find(user_id).login_token, friend_token: User.find(friend_id).login_token}.to_json)	
 	end
 
 end
