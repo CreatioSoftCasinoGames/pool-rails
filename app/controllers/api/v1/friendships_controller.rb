@@ -3,7 +3,7 @@ class Api::V1::FriendshipsController < Api::V1::ApplicationController
 	#skip_before_filter :authenticate_user
 	
 	def create
-		@friend = Friendship.new(user_token: params[:login_token], friends_token: params[:friend_token], freind_type: "buddy")
+		@friend = Friendship.new(user_token: params[:login_token], friends_token: params[:friend_token], friend_type: "buddy")
 		if @friend.save
 			render json: {
 				success: true
@@ -17,7 +17,7 @@ class Api::V1::FriendshipsController < Api::V1::ApplicationController
 				full_name: user.full_name,
 				image_url: user.image_url,
 				is_online: user.online,
-				device_avtar_id: user.device_avtar_id
+				device_avtar_id: user.device_avatar_id
 			}.to_json)
 		else
 			render json: {
