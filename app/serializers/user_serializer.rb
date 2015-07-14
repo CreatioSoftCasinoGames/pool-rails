@@ -30,5 +30,6 @@ class UserSerializer < ActiveModel::Serializer
               :strike_count,
               :device_id,
               :device_avatar_id,
-              :user_pool_id              
+              :user_pool_id.    
+              :unique_id          
 end

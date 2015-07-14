@@ -31,6 +31,14 @@ class User < ActiveRecord::Base
 
   accepts_nested_attributes_for :login_histories
 
+ before_create :add_unique_id
+
+
+ def add_unique_id
+     unique_value = SecureRandom.hex(4)
+     self.unique_id = unique_value
+      end
+
   def self.fetch_by_login_token(login_token)
     if login_token
       self.where(login_token: login_token).first || LoginHistory.where(login_token: login_token).first.user
