@@ -10,6 +10,7 @@ class User < ActiveRecord::Base
   has_many :unconfirmed_friend_requests, -> { where(confirmed: false) }, class_name: "FriendRequest", foreign_key: "requested_to_id"
   has_many :friendships, :dependent => :destroy
   has_many :friends, through: :friendships
+  has_many :my_friends, foreign_key: "friend_id", class_name: "Friendship"
 
   has_many :gift_requests, :dependent => :destroy, foreign_key: "send_to_id"
   has_many :gift_requests_sent, :dependent => :destroy, class_name: "GiftRequest", foreign_key: "user_id"

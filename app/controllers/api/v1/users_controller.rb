@@ -194,6 +194,7 @@ class Api::V1::UsersController < Api::V1::ApplicationController
 	def my_revenge_list
 		@revenges_received = @user.unaccepted_revenge_requests.where(invitation_type: params[:invitation_type]).collect do |revenge_request|
     	@requested_user = User.find(revenge_request.user_id)
+    	p @requested_user
     	{
 	    	id: revenge_request.id,
 	    	invitation_type: revenge_request.invitation_type,
@@ -204,9 +205,7 @@ class Api::V1::UsersController < Api::V1::ApplicationController
 	    	image_url: @requested_user.image_url
 	    }
     end
-		render json: {
-			requests_received: @revenges_received
-		}
+		render json: @revenges_received
 	end
 
 	private

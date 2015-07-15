@@ -83,9 +83,10 @@ ActiveRecord::Schema.define(version: 20150715121805) do
   end
 
   create_table "game_requests", force: true do |t|
+    t.integer  "user_id"
     t.integer  "requested_to"
     t.string   "invitation_type"
-    t.boolean  "accepted"
+    t.boolean  "accepted",        default: false
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "club_config_id"
@@ -155,7 +156,6 @@ ActiveRecord::Schema.define(version: 20150715121805) do
     t.string   "achievement"
     t.decimal  "current_coins_balance",              precision: 10, scale: 0, default: 1000
     t.boolean  "is_dummy",                                                    default: false
-    t.string   "device_avtar_id"
     t.decimal  "total_time_in_game",                 precision: 10, scale: 0, default: 0
     t.integer  "total_games_played",                                          default: 0
     t.binary   "flag"

@@ -2,6 +2,7 @@ class Friendship < ActiveRecord::Base
 	
 	belongs_to :user
 	belongs_to :friend, class_name: "User", foreign_key: :friend_id
+	# belongs_to :my_friend, class_name: "User", foreign_key: :user_id
 	validate :find_user, on: :create
 	validate :friend_user, on: :create
 	validate :valid_friend
@@ -81,7 +82,8 @@ class Friendship < ActiveRecord::Base
 			full_name: friend.full_name,
 			image_url: friend.image_url,
 			is_online: friend.online,
-			device_avatar_id: friend.device_avatar_id
+			device_avatar_id: friend.device_avatar_id,
+			unique_id: unique_id
 		}.to_json)
 	end
 
