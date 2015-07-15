@@ -44,8 +44,12 @@ class UpdateWorker
 			total_play = user.total_games_played + profile_data["data"]["game_played"]
 			user.update_attributes(total_games_played: total_play)
 		end
-		win_percentage = (total_win.to_f/total_play.to_f)*100
-		user.update_attributes(win_percentage: win_percentage)
+		if total_play.to_f > 0
+			user.update_attributes(win_percentage: (total_win.to_f/total_play.to_f)*100)
+		else
+			user.update_attributes(win_percentage: 0)
+		end
+
 		if profile_data["data"]["deduce_amount"]
 			current_coin = user.current_coins_balance - profile_data["data"]["deduce_amount"]
 			user.update_attributes(current_coins_balance: current_coin)

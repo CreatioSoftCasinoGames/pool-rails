@@ -73,12 +73,12 @@ class Api::V1::UsersController < Api::V1::ApplicationController
 	def my_friends
 		if @user.is_fb_connected
 			render json: @user.friends.as_json({
-				only: [:login_token, :online, :device_avatar_id],
+				only: [:login_token, :online, :device_avatar_id, :unique_id],
 				methods: [:full_name, :image_url]
 			})
 		else
 			render json: @user.buddy_friends.as_json({
-				methods: [:full_name, :image_url, :login_token, :online, :device_avtar_id]
+				methods: [:full_name, :image_url, :login_token, :online, :device_avatar_id, :unique_id]
 			})
 		end
 	end
@@ -105,17 +105,23 @@ class Api::V1::UsersController < Api::V1::ApplicationController
 
 	def delete_friend
 		@friend = Friendship.where(user_id: @user.id, friend_id: User.fetch_by_login_token(params[:friend_token]).id).first
-		if @friend.friend_type == "buddy"
-			if @friend.delete
-				render json: {success: true}
+		if @friend.present?
+			if @friend.friend_type == "buddy"
+				if @friend.delete
+					render json: {success: true}
+				else
+					render json: {success: false}
+				end
 			else
-				render json: {success: false}
+				@friend.delete
+				Friendship.where(user_id: User.fetch_by_login_token(params[:friend_token]).id, friend_id: @user.id).first.delete
+				render json: {
+					success: true
+				}
 			end
 		else
-			@friend.delete
-			Friendship.where(user_id: User.fetch_by_login_token(params[:friend_token]).id, friend_id: @user.id).first.delete
 			render json: {
-				success: true
+				success: false
 			}
 		end
 	end

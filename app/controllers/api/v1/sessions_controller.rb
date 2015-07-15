@@ -25,7 +25,7 @@ class Api::V1::SessionsController < Api::V1::ApplicationController
 			login_token = SecureRandom.hex(5)
 			if @user.update_attributes(login_token: login_token, online: true, login_histories_attributes: {id: nil, active: true, login_token: login_token })
 				# @message = {}
-				REDIS_CLIENT.PUBLISH("friend_online", {publish_type: "friend_online", login_token: @user.login_token, friends_token: @user.friends.collect(&:login_token) }.to_json)
+				REDIS_CLIENT.PUBLISH("friend_online", {publish_type: "friend_online", unique_id: @user.unique_id, friends_token: @user.friends.collect(&:login_token) }.to_json)
 				render json: @user.as_json({
 					only: [ :id, :current_level, :xp, :login_token, :current_coins_balance, :unique_id,:device_id, :is_dummy, :device_avatar_id,
 						:won_count, :total_games_played, :total_tournament_won, :total_tournament_played],

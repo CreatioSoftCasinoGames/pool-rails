@@ -12,7 +12,7 @@ class Friendship < ActiveRecord::Base
 		[friend.first_name, friend.last_name].join(" ")
 	end
 
-	def device_avtar_id
+	def device_avatar_id
 		friend.device_avatar_id
 	end
 
@@ -32,6 +32,10 @@ class Friendship < ActiveRecord::Base
 	def online
 		friend.online
 		# User.where(friend_id: self.friend_id).first.online
+	end
+
+	def unique_id
+		friend.unique_id
 	end
 
 	private
@@ -65,7 +69,20 @@ class Friendship < ActiveRecord::Base
 	end
 
 	def publish_friend
-		REDIS_CLIENT.PUBLISH("friend_added", {publish_type: "friend_added", login_token: User.find(user_id).login_token, friend_token: User.find(friend_id).login_token}.to_json)	
+		p "=================================================="
+		friend = User.find(friend_id)
+		p friend
+		user = User.find(user_id)
+		p user
+		REDIS_CLIENT.PUBLISH("friend_added", {
+			publish_type: "friend_added", 
+			login_token: user.login_token,
+			friend_token: friend.login_token,
+			full_name: friend.full_name,
+			image_url: friend.image_url,
+			is_online: friend.online,
+			device_avatar_id: friend.device_avatar_id
+		}.to_json)
 	end
 
 end
