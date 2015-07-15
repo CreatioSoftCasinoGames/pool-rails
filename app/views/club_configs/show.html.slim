@@ -20,6 +20,12 @@ p
   = @club_config.club_type
 
 p
+  strong= model_class.human_attribute_name(:guideline_status) + ':'
+  br
+  = @club_config.guideline_status
+
+
+p
   strong= model_class.human_attribute_name(:rule_id) + ':'
   br
   = @club_config.rule_id

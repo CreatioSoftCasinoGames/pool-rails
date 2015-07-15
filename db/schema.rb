@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150715114533) do
+ActiveRecord::Schema.define(version: 20150715121805) do
 
   create_table "api_keys", force: true do |t|
     t.string   "token"
@@ -29,8 +29,8 @@ ActiveRecord::Schema.define(version: 20150715114533) do
 
   create_table "club_configs", force: true do |t|
     t.string   "name"
-    t.decimal  "entry_fees",    precision: 10, scale: 0
-    t.decimal  "winner_amount", precision: 10, scale: 0
+    t.decimal  "entry_fees",       precision: 10, scale: 0
+    t.decimal  "winner_amount",    precision: 10, scale: 0
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "club_type"
@@ -39,6 +39,7 @@ ActiveRecord::Schema.define(version: 20150715114533) do
     t.integer  "winner_xp"
     t.integer  "looser_xp"
     t.integer  "bonus_amount"
+    t.boolean  "guideline_status"
   end
 
   create_table "clubs", force: true do |t|
