@@ -8,6 +8,7 @@ table.table.table-striped
       th= model_class.human_attribute_name(:name)
       th= model_class.human_attribute_name(:entry_fees)
       th= model_class.human_attribute_name(:winner_amount)
+      th= model_class.human_attribute_name(:bonus_amount)
       th= model_class.human_attribute_name(:club_type)
       th= model_class.human_attribute_name(:rule_id)
       th= model_class.human_attribute_name(:active)
@@ -22,6 +23,7 @@ table.table.table-striped
         td= club_config.name
         td= club_config.entry_fees
         td= club_config.winner_amount
+        td= club_config.bonus_amount
         td= club_config.club_type
         td= club_config.rule_id
         td= club_config.active
