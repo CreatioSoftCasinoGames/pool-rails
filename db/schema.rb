@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150715121805) do
+ActiveRecord::Schema.define(version: 20150716101750) do
 
   create_table "api_keys", force: true do |t|
     t.string   "token"
@@ -86,10 +86,12 @@ ActiveRecord::Schema.define(version: 20150715121805) do
     t.integer  "user_id"
     t.integer  "requested_to"
     t.string   "invitation_type"
-    t.boolean  "accepted",        default: false
+    t.boolean  "accepted",                   default: false
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "club_config_id"
+    t.datetime "acceptance_by_user_at"
+    t.datetime "acceptance_by_requester_at"
   end
 
   create_table "games", force: true do |t|

@@ -70,11 +70,8 @@ class Friendship < ActiveRecord::Base
 	end
 
 	def publish_friend
-		p "=================================================="
 		friend = User.find(friend_id)
-		p friend
 		user = User.find(user_id)
-		p user
 		REDIS_CLIENT.PUBLISH("friend_added", {
 			publish_type: "friend_added", 
 			login_token: user.login_token,

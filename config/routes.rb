@@ -16,7 +16,11 @@ Rails.application.routes.draw do
 
   namespace :api do
     namespace :v1 do
-      resources :game_requests
+      resources :game_requests do
+        member do
+          put :play_latter
+        end
+      end
       resources :games do
         get :player_list
       end

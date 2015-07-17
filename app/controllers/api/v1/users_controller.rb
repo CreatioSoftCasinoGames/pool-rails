@@ -194,15 +194,18 @@ class Api::V1::UsersController < Api::V1::ApplicationController
 	def my_revenge_list
 		@revenges_received = @user.unaccepted_revenge_requests.where(invitation_type: params[:invitation_type]).collect do |revenge_request|
     	@requested_user = User.find(revenge_request.user_id)
-    	p @requested_user
     	{
 	    	id: revenge_request.id,
 	    	invitation_type: revenge_request.invitation_type,
 	    	accepted: revenge_request.accepted,
+	    	club_config_id: revenge_request.club_config_id,
 	    	user_login_token: @requested_user.login_token,
 	    	requested_token: User.find(revenge_request.requested_to).login_token,
 	    	full_name: @requested_user.full_name,
-	    	image_url: @requested_user.image_url
+	    	image_url: @requested_user.image_url,
+	    	online: @requested_user.online,
+	    	device_avatar_id: @requested_user.device_avatar_id,
+	    	unique_id: @requested_user.unique_id
 	    }
     end
 		render json: @revenges_received
