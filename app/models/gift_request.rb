@@ -5,8 +5,8 @@ class GiftRequest < ActiveRecord::Base
 	validate :valid_request, on: :create
 	validate :send_once, on: :create
 	validate :max_send, on: :create
-	validate :credit_gift
-	after_create :publish_gift
+	after_update :credit_gift
+	after_save :publish_gift
 
 	belongs_to :reciever, class_name: "User", foreign_key: "send_to_id"
 
@@ -24,8 +24,36 @@ class GiftRequest < ActiveRecord::Base
 		[user.first_name, user.last_name].join(" ")
 	end
 
+	def receiver
+		User.fetch_by_login_token(send_token)
+	end
+
+	def sender_name
+		user.full_name
+	end
+
+	def receiver_name
+		if reciever.present?
+			[reciever.first_name, reciever.last_name].join(" ")
+		else
+			" "
+		end
+	end
+
 	def image_url
 		user.image_url
+	end
+
+	def device_avatar_id
+		user.device_avatar_id
+	end
+
+	def sender_unique_id
+		user.unique_id
+	end
+
+	def receiver_unique_id
+		reciever.unique_id
 	end
 
 	private
@@ -46,12 +74,12 @@ class GiftRequest < ActiveRecord::Base
 	end
 
 	def send_once
-		gift_sent = GiftRequest.where(user_id: user_id, send_to_id: send_to_id).last
-		if gift_sent.present?
-			if gift_sent.created_at.to_date == Time.now.to_date
-				self.errors.add(:base, "Request already sent, please send after 24 hours!")
-			end
-		end
+		# gift_sent = GiftRequest.where(user_id: user_id, send_to_id: send_to_id).last
+		# if gift_sent.present?
+		# 	if gift_sent.created_at.to_date == Time.now.to_date
+		# 		self.errors.add(:base, "Request already sent, please send after 24 hours!")
+		# 	end
+		# end
 	end
 
 	def max_send
@@ -67,12 +95,18 @@ class GiftRequest < ActiveRecord::Base
 			if gift_type == "coins"
 				gift_coins = reciever.current_coins_balance + gift_value
 				self.reciever.update_attributes(current_coins_balance: gift_coins)
+			elsif gift_type == "guideline_powerup"
+				gift_guideline_powerup = reciever.guideline_powerup + gift_value
+				self.reciever.update_attributes(guideline_powerup: tickets)
+			elsif gift_type == "timer_powerup"
+				gift_timer_powerup = reciever.timer_powerup + gift_value
+				self.reciever.update_attributes(timer_powerup: powerups)
 			end
 		end
 	end
 
 	def publish_gift
-		REDIS_CLIENT.PUBLISH("gift_received", {id: id, request_type: "gift_received", login_token: user.login_token, send_to_token: send_token, full_name: full_name, gift_type: gift_type, gift_value: gift_value, confirmed: confirmed, image_url: image_url})
+		REDIS_CLIENT.PUBLISH("gift_received", {id: id, request_type: "gift_received", login_token: user.login_token, send_to_token: send_token, sender_name: sender_name, receiver_name: receiver_name, full_name: full_name, gift_type: gift_type, gift_value: gift_value, confirmed: confirmed, image_url: image_url, device_avatar_id: device_avatar_id, sender_unique_id: sender_unique_id, receiver_unique_id: receiver_unique_id}.to_json)
 	end
 
 end

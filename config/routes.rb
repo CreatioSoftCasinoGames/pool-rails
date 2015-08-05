@@ -48,6 +48,7 @@ Rails.application.routes.draw do
           put :disconnect_facebook
           get :my_revenge_list
           get :winner_list
+          get :find_friend
         end
       end
     end

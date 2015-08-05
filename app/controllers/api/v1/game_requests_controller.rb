@@ -7,7 +7,8 @@ class Api::V1::GameRequestsController < Api::V1::ApplicationController
     @game_request = current_user.revenges_sent.build(requested_to_token: params[:requested_token], invitation_type: params[:invitation_type], accepted: accepted, club_config_id: params[:club_config_id])
     if @game_request.save
       render json: {
-        success: true
+        success: true,
+        id: @game_request.id
       }
     else
       render json: {

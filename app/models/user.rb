@@ -34,10 +34,49 @@ class User < ActiveRecord::Base
 
   before_create :add_unique_id
 
+  def is_ask_for_gift(friend_id)
+    gift_sent = gift_requests_sent.where(gift_requests: {send_to_id: friend_id}).last
+    if gift_sent.present?
+      gift_sent.created_at < Time.zone.now - 24.hours
+    else
+      true
+    end
+  end
 
-  def add_unique_id
-   unique_value = SecureRandom.hex(4)
-   self.unique_id = unique_value
+  def ask_for_gift_in(friend_id)
+    gift_sent = gift_requests_sent.where(send_to_id: friend_id).last
+    if gift_sent.present?
+      gift_sent.created_at - Time.zone.now + 24.hours
+    else
+      0
+    end
+  end
+
+  def can_challenge(friend_id)
+    challenge_sent = revenges_sent.where(game_requests: {requested_to: friend_id}).last
+    if challenge_sent.present?
+      challenge_sent.created_at < Time.zone.now - 24.hours
+    else
+      true
+    end
+  end
+
+  def ask_for_challenge_in(friend_id)
+    challenge_sent = revenges_sent.where(requested_to: friend_id).last
+    if challenge_sent.present?
+      challenge_sent.created_at - Time.zone.now + 24.hours
+    else
+      0
+    end
+  end
+
+  def challenged_in(friend_id)
+    challenge_sent = revenges_sent.where("requested_to = ? AND created_at >= ?", friend_id, Time.zone.now - 24.hours)
+    if challenge_sent.present?
+      challenge_sent.collect(&:club_config_id)
+    else
+      nil
+    end
   end
 
   def self.fetch_by_login_token(login_token)
@@ -149,6 +188,11 @@ class User < ActiveRecord::Base
         end
       end
     end
+  end
+
+  def add_unique_id
+   unique_value = SecureRandom.hex(4)
+   self.unique_id = unique_value
   end
 
 end

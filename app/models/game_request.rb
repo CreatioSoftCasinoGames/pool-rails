@@ -90,9 +90,9 @@ class GameRequest < ActiveRecord::Base
   	p user_id
   	p requested_to
   	p "________________________________________________________________________________________________________"
-		revenge_sent = GameRequest.where(user_id: user_id, requested_to: requested_to).last
+		revenge_sent = GameRequest.where(user_id: user_id, requested_to: requested_to, club_config_id: club_config_id).last
 		if revenge_sent.present?
-			if revenge_sent.created_at.to_date == Time.now.to_date
+			if revenge_sent.created_at.to_date == Time.zone.now.to_date
 				self.errors.add(:base, "Request already sent, please send after 24 hours!")
 			end
 		end

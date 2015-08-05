@@ -39,6 +39,10 @@ class Friendship < ActiveRecord::Base
 		friend.unique_id
 	end
 
+	def current_level
+		friend.current_level
+	end
+
 	private
 
 	def find_user
@@ -64,6 +68,7 @@ class Friendship < ActiveRecord::Base
 	end
 
 	def valid_friend
+
 		if Friendship.where(user_id: self.user_id, friend_id: self.friend_id).present?
 			self.errors.add(:base, "Already added")
 		end
@@ -80,7 +85,9 @@ class Friendship < ActiveRecord::Base
 			image_url: friend.image_url,
 			is_online: friend.online,
 			device_avatar_id: friend.device_avatar_id,
-			unique_id: unique_id
+			unique_id: unique_id,
+			can_send_gift: user.is_ask_for_gift(friend.id),
+			can_challenge: user.can_challenge(friend.id)
 		}.to_json)
 	end
 

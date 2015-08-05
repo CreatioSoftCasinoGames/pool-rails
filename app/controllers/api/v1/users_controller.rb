@@ -72,14 +72,53 @@ class Api::V1::UsersController < Api::V1::ApplicationController
 
 	def my_friends
 		if @user.is_fb_connected
-			render json: @user.friends.as_json({
-				only: [:login_token, :online, :device_avatar_id, :unique_id],
-				methods: [:full_name, :image_url]
-			})
+			friends = @user.friends.collect do |friend|
+				{
+					login_token: friend.login_token,
+					online: friend.online,
+					current_level: friend.current_level,
+					full_name: friend.full_name,
+					image_url: friend.image_url,
+					device_avatar_id: friend.device_avatar_id,
+					unique_id: friend.unique_id,
+					can_send_gift: @user.is_ask_for_gift(friend.id),
+					send_gift_time_remaining: @user.ask_for_gift_in(friend.id),
+					can_challenge: @user.can_challenge(friend.id),
+					challenge_time_remaining: @user.ask_for_challenge_in(friend.id),
+					allready_challenged_in: @user.challenged_in(friend.id)
+				}
+			end
 		else
-			render json: @user.buddy_friends.as_json({
-				methods: [:full_name, :image_url, :login_token, :online, :device_avatar_id, :unique_id]
-			})
+			friends = @user.buddy_friends.collect do |buddy_friend|
+				{
+					login_token: buddy_friend.login_token,
+					online: buddy_friend.online,
+					current_level: buddy_friend.current_level,
+					full_name: buddy_friend.full_name,
+					image_url: buddy_friend.image_url,
+					device_avatar_id: buddy_friend.device_avatar_id,
+					unique_id: buddy_friend.unique_id,
+					can_send_gift: @user.is_ask_for_gift(buddy_friend.id),
+					send_gift_time_remaining: @user.ask_for_gift_in(buddy_friend.id),
+					can_challenge: @user.can_challenge(buddy_friend.id),
+					challenge_time_remaining: @user.ask_for_challenge_in(buddy_friend.id),
+					allready_challenged_in: @user.challenged_in(buddy_friend.id)
+				}
+			end
+		end
+		render json: friends
+	end
+
+	def find_friend
+		@friend = User.where(unique_id: params[:friend_id]).first
+		# @friend.image_url = @friend.image_url.present? ? @friend.image_url : ""
+
+		if @friend.present?
+			render json: @friend
+		else
+			render json: { 
+				message: "User not found with this id" 
+			}
 		end
 	end
 
@@ -92,8 +131,23 @@ class Api::V1::UsersController < Api::V1::ApplicationController
 	end
 
 	def received_gift
-		render json: @user.unconfirmed_gift_requests.where(is_asked: false)
-	end
+	 	gifts_received = @user.gift_requests_sent.where(confirmed: true).collect do |gift|
+	  	reciever = User.find(gift.send_to_id)
+	  	{
+	    	id: gift.id,
+	    	user_login_token: @user.login_token,
+	    	send_to_token: reciever.login_token,
+	    	gift_type: gift.gift_type,
+	    	gift_value: gift.gift_value,
+	    	is_asked: gift.is_asked,
+	    	confirmed: gift.confirmed,
+	    	full_name: reciever.full_name,
+	    	image_url: reciever.image_url,
+	    	device_avatar_id: reciever.device_avatar_id
+	  	}
+	 	end
+	 render json: gifts_received
+ end
 
 	def ask_for_gift_to
 		render json: @user.gift_requests_sent.where(is_asked: true)
@@ -149,7 +203,7 @@ class Api::V1::UsersController < Api::V1::ApplicationController
 	end
 
 	def opponent_profile
-		render json: @user = User.where(login_token:(params[:opponent_id])).first
+		render json: User.where(login_token:(params[:opponent_id])).first
 	end
 
 	def connect_facebook
@@ -192,21 +246,21 @@ class Api::V1::UsersController < Api::V1::ApplicationController
 	end
 
 	def my_revenge_list
-		@revenges_received = @user.unaccepted_revenge_requests.where(invitation_type: params[:invitation_type]).collect do |revenge_request|
-    	@requested_user = User.find(revenge_request.user_id)
-    	{
-	    	id: revenge_request.id,
-	    	invitation_type: revenge_request.invitation_type,
-	    	accepted: revenge_request.accepted,
-	    	club_config_id: revenge_request.club_config_id,
-	    	user_login_token: @requested_user.login_token,
-	    	requested_token: User.find(revenge_request.requested_to).login_token,
-	    	full_name: @requested_user.full_name,
-	    	image_url: @requested_user.image_url,
-	    	online: @requested_user.online,
-	    	device_avatar_id: @requested_user.device_avatar_id,
-	    	unique_id: @requested_user.unique_id
-	    }
+		@revenges_received = @user.unaccepted_revenge_requests.where("invitation_type = ? AND created_at >= ?",  params[:invitation_type], Time.zone.now - 24.hours).collect do |revenge_request|
+		@requested_user = User.find(revenge_request.user_id)
+		{
+    	id: revenge_request.id,
+    	invitation_type: revenge_request.invitation_type,
+    	accepted: revenge_request.accepted,
+    	club_config_id: revenge_request.club_config_id,
+    	user_login_token: @requested_user.login_token,
+    	requested_token: User.find(revenge_request.requested_to).login_token,
+    	full_name: @requested_user.full_name,
+    	image_url: @requested_user.image_url,
+    	online: @requested_user.online,
+    	device_avatar_id: @requested_user.device_avatar_id,
+    	unique_id: @requested_user.unique_id
+    }
     end
 		render json: @revenges_received
 	end

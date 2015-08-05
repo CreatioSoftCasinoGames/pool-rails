@@ -6,6 +6,9 @@ class GiftRequestSerializer < ActiveModel::Serializer
 	           :gift_value, 
 	           :is_asked, 
 	           :confirmed, 
-	           :full_name, 
-	           :image_url
+	           :full_name,
+	           :device_avatar_id, 
+	           :image_url,
+	           :sender_unique_id,
+	           :receiver_unique_id
 end
