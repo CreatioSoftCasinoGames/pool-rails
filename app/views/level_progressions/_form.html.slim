@@ -1,0 +1,36 @@
+= form_for @level_progression, html: { class: "form form-horizontal level_progression" } do |f|
+  .form-group
+    = f.label :level, :class => 'control-label col-lg-2'
+    .col-lg-10
+      = f.text_field :level, :class => 'form-control'
+    = f.error_span(:level)
+  .form-group
+    = f.label :xp_required_to_clear, :class => 'control-label col-lg-2'
+    .col-lg-10
+      = f.text_field :xp_required_to_clear, :class => 'form-control'
+    = f.error_span(:xp_required_to_clear)
+  .form-group
+    = f.label :factor_of_increase, :class => 'control-label col-lg-2'
+    .col-lg-10
+      = f.text_field :factor_of_increase, :class => 'form-control'
+    = f.error_span(:factor_of_increase)
+  .form-group
+    = f.label :award, :class => 'control-label col-lg-2'
+    .col-lg-10
+      = f.text_field :award, :class => 'form-control'
+    = f.error_span(:award)
+  .form-group
+    = f.label :cue_unlocked, :class => 'control-label col-lg-2'
+    .col-lg-10
+      = f.check_box :cue_unlocked
+    = f.error_span(:cue_unlocked)
+  .form-group
+    = f.label :rank, :class => 'control-label col-lg-2'
+    .col-lg-10
+      = f.text_field :rank, :class => 'form-control'
+    = f.error_span(:rank)
+  .form-group
+    .col-lg-offset-2.col-lg-10
+      = f.submit nil, :class => 'btn btn-primary'
+      '
+      = link_to t('.cancel', :default => t("helpers.links.cancel")), level_progressions_path, :class => 'btn'

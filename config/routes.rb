@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
   
+  resources :level_progressions
+
   resources :client_bugs
 
   resources :dynamic_iaps
@@ -49,6 +51,7 @@ Rails.application.routes.draw do
           get :my_revenge_list
           get :winner_list
           get :find_friend
+          put :update_points
         end
       end
     end

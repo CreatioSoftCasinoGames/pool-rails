@@ -61,6 +61,10 @@ class User < ActiveRecord::Base
     end
   end
 
+  def xp_required_to_finish_level
+    LevelProgression.where(level: current_level).first.xp_required_to_clear
+  end
+
   def ask_for_challenge_in(friend_id)
     challenge_sent = revenges_sent.where(requested_to: friend_id).last
     if challenge_sent.present?

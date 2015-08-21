@@ -29,8 +29,8 @@ class Api::V1::SessionsController < Api::V1::ApplicationController
 				# REDIS_CLIENT.PUBLISH("challengers_online", {publish_type: "challengers_online", online: true, unique_id: @user.unique_id }.to_json)
 				render json: @user.as_json({
 					only: [ :id, :current_level, :xp, :login_token, :current_coins_balance, :unique_id,:device_id, :is_dummy, :device_avatar_id,
-						:won_count, :total_games_played, :total_tournament_won, :total_tournament_played],
-          methods: [:full_name, :image_url]
+						:won_count, :total_games_played, :total_tournament_won, :ball_potted, :total_tournament_played],
+          methods: [:full_name, :image_url, :xp_required_to_finish_level]
 				}) 
 			else
 				render json: {

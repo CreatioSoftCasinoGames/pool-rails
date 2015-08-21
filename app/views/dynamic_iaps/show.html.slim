@@ -7,21 +7,13 @@ p
   br
   = @dynamic_iap.iap_id
 p
-  strong= model_class.human_attribute_name(:old_coins_value) + ':'
+  strong= model_class.human_attribute_name(:old_value) + ':'
   br
-  = @dynamic_iap.old_coins_value
+  = @dynamic_iap.old_value
 p
-  strong= model_class.human_attribute_name(:new_coins_value) + ':'
+  strong= model_class.human_attribute_name(:new_value) + ':'
   br
-  = @dynamic_iap.new_coins_value
-p
-  strong= model_class.human_attribute_name(:old_pricing) + ':'
-  br
-  = @dynamic_iap.old_pricing
-p
-  strong= model_class.human_attribute_name(:new_pricing) + ':'
-  br
-  = @dynamic_iap.new_pricing
+  = @dynamic_iap.new_value
 p
   strong= model_class.human_attribute_name(:offer) + ':'
   br

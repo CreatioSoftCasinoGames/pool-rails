@@ -1,6 +1,6 @@
 class Api::V1::UsersController < Api::V1::ApplicationController
 
-	before_action :find_user, only: [:show, :update, :winner_list, :my_friend_requests, :my_revenge_list, :connect_facebook, :disconnect_facebook, :friend_request_sent, :my_friends, :sent_gift, :received_gift, :ask_for_gift_to, :ask_for_gift_by, :delete_friend]
+	before_action :find_user, only: [:show, :update, :winner_list, :my_friend_requests, :my_revenge_list, :connect_facebook, :disconnect_facebook, :friend_request_sent, :my_friends, :sent_gift, :received_gift, :ask_for_gift_to, :ask_for_gift_by, :delete_friend, :update_points]
 
 	def create
 		@user = User.new(email: params[:email], password: params[:password], password_confirmation: params[:password], first_name: params[:first_name], last_name: params[:last_name], fb_id: params[:fb_id])
@@ -34,6 +34,23 @@ class Api::V1::UsersController < Api::V1::ApplicationController
 			render json: {
 				user: @user,
 				valid: false,
+				errors: @user.errors.full_messages.join(", ")
+			}
+		end
+	end
+
+	def update_points
+		if @user.update_attributes(user_params)
+			render json: {
+				user: @user.as_json({
+					only: user_params.keys,
+					methods: [:xp_required_to_finish_level]
+				}),
+				success: true
+			}
+		else
+			render json: {
+				success: false,
 				errors: @user.errors.full_messages.join(", ")
 			}
 		end

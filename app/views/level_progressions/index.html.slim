@@ -1,0 +1,32 @@
+- model_class = LevelProgression
+.page-header
+  h1=t '.title', :default => model_class.model_name.human.pluralize.titleize
+table.table.table-striped
+  thead
+    tr
+      th= model_class.human_attribute_name(:id)
+      th= model_class.human_attribute_name(:level)
+      th= model_class.human_attribute_name(:xp_required_to_clear)
+      th= model_class.human_attribute_name(:factor_of_increase)
+      th= model_class.human_attribute_name(:award)
+      th= model_class.human_attribute_name(:cue_unlocked)
+      th= model_class.human_attribute_name(:rank)
+      th= model_class.human_attribute_name(:created_at)
+      th=t '.actions', :default => t("helpers.actions")
+  tbody
+    - @level_progressions.each do |level_progression|
+      tr
+        td= link_to level_progression.id, level_progression_path(level_progression)
+        td= level_progression.level
+        td= level_progression.xp_required_to_clear
+        td= level_progression.factor_of_increase
+        td= level_progression.award
+        td= level_progression.cue_unlocked
+        td= level_progression.rank
+        td=l level_progression.created_at
+        td
+          = link_to t('.edit', :default => t("helpers.links.edit")), edit_level_progression_path(level_progression), :class => 'btn btn-default btn-xs'
+          '
+          = link_to t('.destroy', :default => t("helpers.links.destroy")), level_progression_path(level_progression), :method => :delete, :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) }, :class => 'btn btn-xs btn-danger'
+
+= link_to t('.new', :default => t("helpers.links.new")), new_level_progression_path, :class => 'btn btn-primary'

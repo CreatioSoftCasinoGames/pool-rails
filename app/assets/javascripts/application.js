@@ -14,3 +14,14 @@
 //= require jquery_ujs
 //= require turbolinks
 //= require_tree .
+$(document).ready(function (){
+	$('.filter-iap').change(function() {
+		var url = "";
+		if ($('.filter-iap').val() != ""){
+			url = "/dynamic_iaps?iap_type="+$('.filter-iap').val();
+		} else{
+			url = "/dynamic_iaps"
+		}
+		window.location.replace(url);
+	})
+})

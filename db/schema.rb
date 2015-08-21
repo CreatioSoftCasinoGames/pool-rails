@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150729070124) do
+ActiveRecord::Schema.define(version: 20150821125338) do
 
   create_table "api_keys", force: true do |t|
     t.string   "token"
@@ -53,15 +53,14 @@ ActiveRecord::Schema.define(version: 20150729070124) do
 
   create_table "dynamic_iaps", force: true do |t|
     t.string   "iap_id"
-    t.decimal  "old_coins_value", precision: 10, scale: 0
-    t.decimal  "new_coins_value", precision: 10, scale: 0
-    t.decimal  "old_pricing",     precision: 10, scale: 0
-    t.decimal  "new_pricing",     precision: 10, scale: 0
-    t.boolean  "offer"
+    t.decimal  "old_value",  precision: 10, scale: 0
+    t.decimal  "new_value",  precision: 10, scale: 0
+    t.string   "offer"
     t.string   "currency"
     t.string   "country"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "iap_type"
   end
 
   create_table "friend_requests", force: true do |t|
@@ -114,6 +113,17 @@ ActiveRecord::Schema.define(version: 20150729070124) do
     t.datetime "updated_at"
   end
 
+  create_table "level_progressions", force: true do |t|
+    t.integer  "level"
+    t.integer  "xp_required_to_clear"
+    t.integer  "factor_of_increase"
+    t.string   "award"
+    t.boolean  "cue_unlocked"
+    t.string   "rank"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "login_histories", force: true do |t|
     t.boolean  "active"
     t.integer  "user_id"
@@ -144,7 +154,7 @@ ActiveRecord::Schema.define(version: 20150729070124) do
     t.boolean  "online",                                                      default: false
     t.integer  "won_count",                                                   default: 0
     t.integer  "lost_count",                                                  default: 0
-    t.integer  "rank",                                                        default: 0
+    t.string   "rank",                                                        default: "0"
     t.decimal  "total_coins_won",                    precision: 10, scale: 0, default: 0
     t.decimal  "win_percentage",                     precision: 10, scale: 0, default: 0
     t.integer  "total_tournament_won",                                        default: 0

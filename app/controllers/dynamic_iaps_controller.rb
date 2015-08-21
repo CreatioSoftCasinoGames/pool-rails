@@ -4,7 +4,11 @@ class DynamicIapsController < ApplicationController
   respond_to :html
 
   def index
-    @dynamic_iaps = DynamicIap.all
+    if params[:iap_type].blank?
+      @dynamic_iaps = DynamicIap.all
+    else
+      @dynamic_iaps = DynamicIap.where(iap_type: params[:iap_type])
+    end
     respond_with(@dynamic_iaps)
   end
 
@@ -42,6 +46,6 @@ class DynamicIapsController < ApplicationController
     end
 
     def dynamic_iap_params
-      params.require(:dynamic_iap).permit(:iap_id, :old_coins_value, :new_coins_value, :old_pricing, :new_pricing, :offer, :currency, :country)
+      params.require(:dynamic_iap).permit(:iap_id, :old_value, :new_value, :offer, :currency, :country, :iap_type)
     end
 end
