@@ -53,9 +53,9 @@ class Api::V1::SessionsController < Api::V1::ApplicationController
 			if params[:first_name]
 				@user.update_attributes(first_name: params[:first_name], last_name: params[:last_name])
 			end
-			if @user.update_attributes(login_token: login_token, online: true, game_version: params[:game_version], device: params[:device], country: params[:country], currency: params[:currency], login_histories_attributes: {id: nil, active: true, login_token: login_token })
+			if @user.update_attributes(login_token: login_token, online: true, country: params[:country], login_histories_attributes: {id: nil, active: true, login_token: login_token })
 				REDIS_CLIENT.PUBLISH("friend_online", {publish_type: "friend_online", login_token: @user.login_token, online: true, friends_token: @user.friends.collect(&:login_token)}.to_json)
-				@user.previous_login_token = @user.login_histories.order("created_at desc").limit(2).last.try(:login_token)
+				# @user.previous_login_token = @user.login_histories.order("created_at desc").limit(2).last.try(:login_token)
 				render json: @user.as_json({
 					only: [ :id, :current_level, :xp, :login_token, :current_coins_balance, :unique_id,:device_id, :is_dummy, :device_avatar_id,
 						:won_count, :total_games_played, :total_tournament_won, :ball_potted, :total_tournament_played, :rank, :cue_owned],
