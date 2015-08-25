@@ -23,11 +23,16 @@ class UpdateWorker
 		user.update_attributes(accuracy: accuracy)
 		if profile_data["data"]["xp"]
 			total_xp = user.xp + profile_data["data"]["xp"]
-			user.update_attributes(xp: profile_data["data"]["xp"])
+			user.update_attributes(xp: total_xp)
 		end
-		if profile_data["data"]["win_streak"]
-			total_win_streak = user.win_streak + profile_data["data"]["win_streak"]
-			user.update_attributes(win_streak: profile_data["data"]["win_streak"])
+		if profile_data["data"]["win_streak"].present?
+			p profile_data["data"]["win_streak"]
+			if profile_data["data"]["win_streak"] > 0
+				total_win_streak = user.win_streak + profile_data["data"]["win_streak"]
+			else
+				total_win_streak = 0
+			end
+			user.update_attributes(win_streak: total_win_streak)
 		end
 		if profile_data["data"]["award"]
 			total_coin = user.total_coins_won + profile_data["data"]["award"].to_i

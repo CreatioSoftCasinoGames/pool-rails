@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150821125338) do
+ActiveRecord::Schema.define(version: 20150824111655) do
 
   create_table "api_keys", force: true do |t|
     t.string   "token"
@@ -133,12 +133,12 @@ ActiveRecord::Schema.define(version: 20150821125338) do
   end
 
   create_table "users", force: true do |t|
-    t.string   "email",                                                       default: "",    null: false
-    t.string   "encrypted_password",                                          default: "",    null: false
+    t.string   "email",                                                       default: "",         null: false
+    t.string   "encrypted_password",                                          default: "",         null: false
     t.string   "reset_password_token"
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
-    t.integer  "sign_in_count",                                               default: 0,     null: false
+    t.integer  "sign_in_count",                                               default: 0,          null: false
     t.datetime "current_sign_in_at"
     t.datetime "last_sign_in_at"
     t.string   "current_sign_in_ip"
@@ -154,7 +154,7 @@ ActiveRecord::Schema.define(version: 20150821125338) do
     t.boolean  "online",                                                      default: false
     t.integer  "won_count",                                                   default: 0
     t.integer  "lost_count",                                                  default: 0
-    t.string   "rank",                                                        default: "0"
+    t.string   "rank",                                                        default: "Beginner"
     t.decimal  "total_coins_won",                    precision: 10, scale: 0, default: 0
     t.decimal  "win_percentage",                     precision: 10, scale: 0, default: 0
     t.integer  "total_tournament_won",                                        default: 0
@@ -178,6 +178,7 @@ ActiveRecord::Schema.define(version: 20150821125338) do
     t.string   "unique_id",                                                   default: ""
     t.integer  "timer_powerup",                                               default: 2
     t.integer  "guideline_powerup",                                           default: 2
+    t.string   "cue_owned"
   end
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
