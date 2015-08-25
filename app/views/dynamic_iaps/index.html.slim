@@ -7,6 +7,7 @@ table.table.table-striped
     tr
       th= model_class.human_attribute_name(:id)
       th= model_class.human_attribute_name(:iap_type)
+      th= model_class.human_attribute_name(:name)
       th= model_class.human_attribute_name(:iap_id)
       th= model_class.human_attribute_name(:old_value)
       th= model_class.human_attribute_name(:new_value)
@@ -17,6 +18,7 @@ table.table.table-striped
       tr
         td= link_to dynamic_iap.id, dynamic_iap_path(dynamic_iap)
         td= dynamic_iap.iap_type
+        td= dynamic_iap.name
         td= dynamic_iap.iap_id
         td= dynamic_iap.old_value
         td= dynamic_iap.new_value
