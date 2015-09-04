@@ -1,0 +1,19 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  1ball: 1
+  2ball: 1
+  3ball: 1
+  4ball: 1
+  5ball: 1
+  6ball: 1
+  7ball: 1
+
+two:
+  1ball: 1
+  2ball: 1
+  3ball: 1
+  4ball: 1
+  5ball: 1
+  6ball: 1
+  7ball: 1

@@ -1,0 +1,2 @@
+module XpBallConsecutivesHelper
+end

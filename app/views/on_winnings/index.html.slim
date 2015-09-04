@@ -1,0 +1,33 @@
+h1 Listing on_winnings
+
+table
+  thead
+    tr
+      th 1ball
+      th 2ball
+      th 3ball
+      th 4ball
+      th 5ball
+      th 6ball
+      th 7ball
+      th
+      th
+      th
+
+  tbody
+    - @on_winnings.each do |on_winning|
+      tr
+        td = on_winning.1ball
+        td = on_winning.2ball
+        td = on_winning.3ball
+        td = on_winning.4ball
+        td = on_winning.5ball
+        td = on_winning.6ball
+        td = on_winning.7ball
+        td = link_to 'Show', on_winning
+        td = link_to 'Edit', edit_on_winning_path(on_winning)
+        td = link_to 'Destroy', on_winning, data: {:confirm => 'Are you sure?'}, :method => :delete
+
+br
+
+= link_to 'New On winning', new_on_winning_path

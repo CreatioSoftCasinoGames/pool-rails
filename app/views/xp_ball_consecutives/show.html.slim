@@ -1,0 +1,38 @@
+- model_class = XpBallConsecutive
+.page-header
+  h1=t '.title', :default => model_class.model_name.human.titleize
+p
+  strong= model_class.human_attribute_name(:room_type) + ':'
+  br
+  = @xp_ball_consecutive.room_type
+
+p
+  strong= model_class.human_attribute_name(:twoball) + ':'
+  br
+  = @xp_ball_consecutive.twoball
+p
+  strong= model_class.human_attribute_name(:threeball) + ':'
+  br
+  = @xp_ball_consecutive.threeball
+p
+  strong= model_class.human_attribute_name(:fourball) + ':'
+  br
+  = @xp_ball_consecutive.fourball
+p
+  strong= model_class.human_attribute_name(:fiveball) + ':'
+  br
+  = @xp_ball_consecutive.fiveball
+p
+  strong= model_class.human_attribute_name(:sixball) + ':'
+  br
+  = @xp_ball_consecutive.sixball
+p
+  strong= model_class.human_attribute_name(:sevenball) + ':'
+  br
+  = @xp_ball_consecutive.sevenball
+
+= link_to t('.back', :default => t("helpers.links.back")), xp_ball_consecutives_path, :class => 'btn btn-default'
+'
+= link_to t('.edit', :default => t("helpers.links.edit")), edit_xp_ball_consecutive_path(@xp_ball_consecutive), :class => 'btn btn-default'
+'
+= link_to t('.destroy', :default => t("helpers.links.destroy")), xp_ball_consecutive_path(@xp_ball_consecutive), :method => "delete", :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) }, :class => 'btn btn-danger'

@@ -1,0 +1,2 @@
+module XpBallPottedOnWinningsHelper
+end

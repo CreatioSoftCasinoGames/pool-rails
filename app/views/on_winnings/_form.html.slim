@@ -1,0 +1,30 @@
+= form_for @on_winning do |f|
+  - if @on_winning.errors.any?
+    #error_explanation
+      h2 = "#{pluralize(@on_winning.errors.count, "error")} prohibited this on_winning from being saved:"
+      ul
+        - @on_winning.errors.full_messages.each do |message|
+          li = message
+
+  .field
+    = f.label :1ball
+    = f.number_field :1ball
+  .field
+    = f.label :2ball
+    = f.number_field :2ball
+  .field
+    = f.label :3ball
+    = f.number_field :3ball
+  .field
+    = f.label :4ball
+    = f.number_field :4ball
+  .field
+    = f.label :5ball
+    = f.number_field :5ball
+  .field
+    = f.label :6ball
+    = f.number_field :6ball
+  .field
+    = f.label :7ball
+    = f.number_field :7ball
+  .actions = f.submit

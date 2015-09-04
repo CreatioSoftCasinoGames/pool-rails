@@ -1,0 +1,41 @@
+- model_class = XpBallPottedOnWinning
+.page-header
+  h1=t '.title', :default => model_class.model_name.human.titleize
+p
+  strong= model_class.human_attribute_name(:room_type) + ':'
+  br
+  = @xp_ball_potted_on_winning.room_type
+p
+  strong= model_class.human_attribute_name(:oneball) + ':'
+  br
+  = @xp_ball_potted_on_winning.oneball
+p
+  strong= model_class.human_attribute_name(:twoball) + ':'
+  br
+  = @xp_ball_potted_on_winning.twoball
+p
+  strong= model_class.human_attribute_name(:threeball) + ':'
+  br
+  = @xp_ball_potted_on_winning.threeball
+p
+  strong= model_class.human_attribute_name(:fourball) + ':'
+  br
+  = @xp_ball_potted_on_winning.fourball
+p
+  strong= model_class.human_attribute_name(:fiveball) + ':'
+  br
+  = @xp_ball_potted_on_winning.fiveball
+p
+  strong= model_class.human_attribute_name(:sixball) + ':'
+  br
+  = @xp_ball_potted_on_winning.sixball
+p
+  strong= model_class.human_attribute_name(:sevenball) + ':'
+  br
+  = @xp_ball_potted_on_winning.sevenball
+
+= link_to t('.back', :default => t("helpers.links.back")), xp_ball_potted_on_winnings_path, :class => 'btn btn-default'
+'
+= link_to t('.edit', :default => t("helpers.links.edit")), edit_xp_ball_potted_on_winning_path(@xp_ball_potted_on_winning), :class => 'btn btn-default'
+'
+= link_to t('.destroy', :default => t("helpers.links.destroy")), xp_ball_potted_on_winning_path(@xp_ball_potted_on_winning), :method => "delete", :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) }, :class => 'btn btn-danger'

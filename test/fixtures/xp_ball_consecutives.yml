@@ -1,0 +1,17 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  twoball: 1
+  threeball: 1
+  fourball: 1
+  fiveball: 1
+  sixball: 1
+  sevenball: 1
+
+two:
+  twoball: 1
+  threeball: 1
+  fourball: 1
+  fiveball: 1
+  sixball: 1
+  sevenball: 1

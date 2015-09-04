@@ -1,0 +1,27 @@
+p#notice = notice
+
+p
+  strong 1ball:
+  = @on_winning.1ball
+p
+  strong 2ball:
+  = @on_winning.2ball
+p
+  strong 3ball:
+  = @on_winning.3ball
+p
+  strong 4ball:
+  = @on_winning.4ball
+p
+  strong 5ball:
+  = @on_winning.5ball
+p
+  strong 6ball:
+  = @on_winning.6ball
+p
+  strong 7ball:
+  = @on_winning.7ball
+
+= link_to 'Edit', edit_on_winning_path(@on_winning)
+'|
+= link_to 'Back', on_winnings_path
