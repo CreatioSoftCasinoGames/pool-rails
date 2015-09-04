@@ -42,6 +42,6 @@ class XpBallPottedOnWinningsController < ApplicationController
     end
 
     def xp_ball_potted_on_winning_params
-      params.require(:xp_ball_potted_on_winning).permit(:oneball, :twoball, :threeball, :fourball, :fiveball, :sixball, :sevenball)
+      params.require(:xp_ball_potted_on_winning).permit(:room_type, :oneball, :twoball, :threeball, :fourball, :fiveball, :sixball, :sevenball)
     end
 end
