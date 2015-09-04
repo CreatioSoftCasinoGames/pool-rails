@@ -7,6 +7,10 @@ p
   br
   = @club_config.name
 p
+  strong= model_class.human_attribute_name(:room_type) + ':'
+  br
+  = @club_config.room_type  
+p
   strong= model_class.human_attribute_name(:entry_fees) + ':'
   br
   = @club_config.entry_fees

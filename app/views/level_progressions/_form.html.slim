@@ -30,6 +30,19 @@
       = f.text_field :rank, :class => 'form-control'
     = f.error_span(:rank)
   .form-group
+    = f.label :on_winning, :class => 'control-label col-lg-2'
+    .col-lg-10
+      = f.text_field :on_winning, :class => 'form-control'
+    = f.error_span(:on_winning)
+  .form-group
+    = f.label :consecutive_ballshot, :class => 'control-label col-lg-2'
+    .col-lg-10
+      = f.text_field :consecutive_ballshot, :class => 'form-control'
+    = f.error_span(:consecutive_ballshot) 
+
+
+
+  .form-group
     .col-lg-offset-2.col-lg-10
       = f.submit nil, :class => 'btn btn-primary'
       '

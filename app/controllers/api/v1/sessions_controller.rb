@@ -54,7 +54,7 @@ class Api::V1::SessionsController < Api::V1::ApplicationController
 				@user.update_attributes(first_name: params[:first_name], last_name: params[:last_name])
 			end
 			if @user.update_attributes(login_token: login_token, online: true, country: params[:country], login_histories_attributes: {id: nil, active: true, login_token: login_token })
-				REDIS_CLIENT.PUBLISH("friend_online", {publish_type: "friend_online", login_token: @user.login_token, online: true, friends_token: @user.friends.collect(&:login_token)}.to_json)
+				REDIS_CLIENT.PUBLISH("online", {publish_type: "online", online: true, unique_id: @user.unique_id, friends_token: @user.my_friends.collect(&:user).collect(&:login_token), challengers_token: @user.revenges_sent.collect(&:requested).collect(&:login_token) }.to_json)
 				# @user.previous_login_token = @user.login_histories.order("created_at desc").limit(2).last.try(:login_token)
 				render json: @user.as_json({
 					only: [ :id, :current_level, :xp, :login_token, :current_coins_balance, :unique_id,:device_id, :is_dummy, :device_avatar_id,
@@ -80,8 +80,8 @@ class Api::V1::SessionsController < Api::V1::ApplicationController
 		if @user.present?
 			login_history_id = @user.login_histories.where(login_histories: {login_token: params[:id]}).first.id
 			if @user.update_attributes(online: false, login_histories_attributes: {id: login_history_id ,active: false})
-				REDIS_CLIENT.srem("game_players", "game_player:#{params[:id]}")
-				REDIS_CLIENT.PUBLISH("friend_online", {publish_type: "friend_online", login_token: @user.login_token, online: false, friends_token: @user.friends.collect(&:login_token)}.to_json)
+				# REDIS_CLIENT.srem("game_players", "game_player:#{params[:id]}")
+				REDIS_CLIENT.PUBLISH("online", {publish_type: "online", online: false, unique_id: @user.unique_id, friends_token: @user.my_friends.collect(&:user).collect(&:login_token), challengers_token: @user.revenges_sent.collect(&:requested).collect(&:login_token) }.to_json)
 				render json: {
 					success: true,
 					message: "You have been signed out successfully!"

@@ -11,6 +11,8 @@ table.table.table-striped
       th= model_class.human_attribute_name(:award)
       th= model_class.human_attribute_name(:cue_unlocked)
       th= model_class.human_attribute_name(:rank)
+      th= model_class.human_attribute_name(:on_winning)
+      th= model_class.human_attribute_name(:consecutive_ballshot)
       th= model_class.human_attribute_name(:created_at)
       th=t '.actions', :default => t("helpers.actions")
   tbody
@@ -23,6 +25,8 @@ table.table.table-striped
         td= level_progression.award
         td= level_progression.cue_unlocked
         td= level_progression.rank
+        td= level_progression.on_winning
+        td= level_progression.consecutive_ballshot
         td=l level_progression.created_at
         td
           = link_to t('.edit', :default => t("helpers.links.edit")), edit_level_progression_path(level_progression), :class => 'btn btn-default btn-xs'

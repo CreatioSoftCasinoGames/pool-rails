@@ -44,7 +44,7 @@ class Api::V1::UsersController < Api::V1::ApplicationController
 			render json: {
 				user: @user.as_json({
 					only: user_params.keys,
-					methods: [:xp_required_to_finish_level]
+					methods: [:xp_required_to_finish_level, :level_required_to_clear_rank]
 				}),
 				success: true
 			}
@@ -285,7 +285,7 @@ class Api::V1::UsersController < Api::V1::ApplicationController
 	private
 
 	def user_params
-		params.require(:user).permit(:first_name, :last_name, :password, :chips, :password_confirmation, :device_avatar_id, :won_count, :lost_count, :rank, :total_coins_won, :cue_owned, :win_percentage, :total_tournament_won, :total_tournament_played, :win_streak, :ball_potted, :accuracy, :xp, :current_level, :country, :achievement, :current_coins_balance, :total_games_played, :flag, :user_pool_id)
+		params.require(:user).permit(:first_name, :last_name, :password, :chips, :password_confirmation, :device_avatar_id, :won_count, :lost_count, :rank, :total_coins_won, :cue_owned, :win_percentage, :total_tournament_won, :total_tournament_played, :win_streak, :ball_potted, :accuracy, :xp, :current_level, :country, :achievement, :current_coins_balance, :total_games_played, :flag, :user_pool_id, :cue_owned)
 	end
 
 	def find_user

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150825115117) do
+ActiveRecord::Schema.define(version: 20150902094722) do
 
   create_table "api_keys", force: true do |t|
     t.string   "token"
@@ -40,6 +40,7 @@ ActiveRecord::Schema.define(version: 20150825115117) do
     t.integer  "looser_xp"
     t.integer  "bonus_amount"
     t.boolean  "guideline_status"
+    t.string   "room_type"
   end
 
   create_table "clubs", force: true do |t|
@@ -53,8 +54,8 @@ ActiveRecord::Schema.define(version: 20150825115117) do
 
   create_table "dynamic_iaps", force: true do |t|
     t.string   "iap_id"
-    t.decimal  "old_value",  precision: 10, scale: 0
-    t.decimal  "new_value",  precision: 10, scale: 0
+    t.decimal  "old_value",   precision: 10, scale: 0
+    t.decimal  "new_value",   precision: 10, scale: 0
     t.string   "offer"
     t.string   "currency"
     t.string   "country"
@@ -62,6 +63,12 @@ ActiveRecord::Schema.define(version: 20150825115117) do
     t.datetime "updated_at"
     t.string   "iap_type"
     t.string   "name"
+    t.boolean  "is_active",                            default: true
+    t.decimal  "old_pricing", precision: 10, scale: 0
+    t.decimal  "new_pricing", precision: 10, scale: 0
+    t.string   "deal_value"
+    t.integer  "more"
+    t.integer  "end_time"
   end
 
   create_table "friend_requests", force: true do |t|
@@ -123,6 +130,8 @@ ActiveRecord::Schema.define(version: 20150825115117) do
     t.string   "rank"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "on_winning"
+    t.integer  "consecutive_ballshot"
   end
 
   create_table "login_histories", force: true do |t|
@@ -179,10 +188,35 @@ ActiveRecord::Schema.define(version: 20150825115117) do
     t.string   "unique_id",                                                   default: ""
     t.integer  "timer_powerup",                                               default: 2
     t.integer  "guideline_powerup",                                           default: 2
-    t.string   "cue_owned"
+    t.string   "cue_owned",                                                   default: ""
   end
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
+
+  create_table "xp_ball_consecutives", force: true do |t|
+    t.integer  "twoball"
+    t.integer  "threeball"
+    t.integer  "fourball"
+    t.integer  "fiveball"
+    t.integer  "sixball"
+    t.integer  "sevenball"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "room_type"
+  end
+
+  create_table "xp_ball_potted_on_winnings", force: true do |t|
+    t.integer  "oneball"
+    t.integer  "twoball"
+    t.integer  "threeball"
+    t.integer  "fourball"
+    t.integer  "fiveball"
+    t.integer  "sixball"
+    t.integer  "sevenball"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "room_type"
+  end
 
 end

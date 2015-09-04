@@ -27,6 +27,15 @@ p
   br
   = @level_progression.rank
 
+p
+  strong= model_class.human_attribute_name(:on_winning) + ':'
+  br
+  = @level_progression.on_winning
+p
+  strong= model_class.human_attribute_name(:consecutive_ballshot) + ':'
+  br
+  = @level_progression.consecutive_ballshot
+
 = link_to t('.back', :default => t("helpers.links.back")), level_progressions_path, :class => 'btn btn-default'
 '
 = link_to t('.edit', :default => t("helpers.links.edit")), edit_level_progression_path(@level_progression), :class => 'btn btn-default'

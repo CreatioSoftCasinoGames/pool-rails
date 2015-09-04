@@ -42,6 +42,6 @@ class LevelProgressionsController < ApplicationController
     end
 
     def level_progression_params
-      params.require(:level_progression).permit(:level, :xp_required_to_clear, :factor_of_increase, :award, :cue_unlocked, :rank)
+      params.require(:level_progression).permit(:level, :xp_required_to_clear, :factor_of_increase, :award, :cue_unlocked, :rank, :on_winning, :consecutive_ballshot)
     end
 end

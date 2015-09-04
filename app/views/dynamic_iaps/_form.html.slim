@@ -5,6 +5,16 @@
       = f.select :iap_type, options_for_select(["Cue", "Coins", "Powerups", "Mini Games"], params[:iap_type]), {prompt: "Select a shop type"}, class: 'form-control'
     = f.error_span(:iap_type)
   .form-group
+    = f.label :iap_type, :class => 'control-label col-lg-2'
+    .col-lg-10
+      = f.text_field :iap_type, class: 'form-control'
+    = f.error_span(:iap_type)  
+  .form-group
+    = f.label :deal_value, :class => 'control-label col-lg-2'
+    .col-lg-10
+      = f.text_field :deal_value, :class => 'form-control'
+    = f.error_span(:deal_value)
+  .form-group
     = f.label :name, :class => 'control-label col-lg-2'
     .col-lg-10
       = f.text_field :name, class: 'form-control'
@@ -17,18 +27,59 @@
   .form-group
     = f.label :old_value, :class => 'control-label col-lg-2'
     .col-lg-10
-      = f.text_field :old_value, :class => 'form-control'
-    = f.error_span(:old_coins_value)
+      = f.text_field :old_value, :class => 'form-control', readonly: @dynamic_iap.iap_type == "Normal"
+    = f.error_span(:old_value)
   .form-group
     = f.label :new_value, :class => 'control-label col-lg-2'
     .col-lg-10
       = f.text_field :new_value, :class => 'form-control'
-    = f.error_span(:new_coins_value)
+    = f.error_span(:new_value)
+  .form-group
+    = f.label :more, :class => 'control-label col-lg-2'
+    .col-lg-10
+      = f.text_field :more, :class => 'form-control'
+    = f.error_span(:more)
+  
+  .form-group
+    = f.label :old_pricing, :class => 'control-label col-lg-2'
+    .col-lg-10
+      = f.text_field :old_pricing, :class => 'form-control', readonly: @dynamic_iap.iap_type == "Normal"
+    = f.error_span(:old_pricing)
+
+  .form-group
+    = f.label :new_pricing, :class => 'control-label col-lg-2'
+    .col-lg-10
+      = f.text_field :new_pricing, :class => 'form-control'
+    = f.error_span(:new_pricing)
+
+
   .form-group
     = f.label :offer, :class => 'control-label col-lg-2'
     .col-lg-10
       = f.text_field :offer, class: 'form-control'
     = f.error_span(:offer)
+
+  .form-group
+    = f.label :currency, :class => 'control-label col-lg-2'
+    .col-lg-10
+      = f.text_field :currency, class: 'form-control'
+    = f.error_span(:currency)
+  .form-group
+    = f.label :country, :class => 'control-label col-lg-2'
+    .col-lg-10
+      = f.text_field :country, class: 'form-control'
+    = f.error_span(:country)
+  .form-group
+    = f.label :is_active, :class => 'control-label col-lg-2'
+    .col-lg-10
+      = f.text_field :is_active, class: 'form-control'
+    = f.error_span(:is_active)
+  .form-group
+    = f.label :end_time, :class => 'control-label col-lg-2'
+    .col-lg-10
+      = f.text_field :end_time, class: 'form-control'
+    = f.error_span(:end_time)  
+
   .form-group
     .col-lg-offset-2.col-lg-10
       = f.submit nil, :class => 'btn btn-primary'

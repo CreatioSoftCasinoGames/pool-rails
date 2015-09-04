@@ -1,3 +1,3 @@
 class LevelProgressionSerializer < ActiveModel::Serializer
-  attributes :id, :level, :xp_required_to_clear, :factor_of_increase, :award, :cue_unlocked, :rank
+  attributes :id, :level, :xp_required_to_clear, :factor_of_increase, :award, :cue_unlocked, :rank, :on_winning, :consecutive_ballshot
 end

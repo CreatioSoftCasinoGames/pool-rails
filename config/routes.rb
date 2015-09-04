@@ -1,5 +1,11 @@
 Rails.application.routes.draw do
   
+  resources :xp_ball_consecutives
+
+  resources :xp_ball_potted_on_winnings
+
+  resources :on_winnings
+
   resources :level_progressions
 
   resources :client_bugs
@@ -11,6 +17,9 @@ Rails.application.routes.draw do
   resources :club_configs
 
   resources :clubs
+
+  resources :xp_ball_potted_consecutive
+
 
   devise_for :users
   get "utility/show_api_key", to: "utility#show_api_key", as: "show_api_key"
@@ -26,6 +35,12 @@ Rails.application.routes.draw do
       resources :games do
         get :player_list
       end
+       resources :xp_ball_potted_consecutives do
+     collection do
+       get :ball_potted_consecutive
+      end
+   end
+      resources :xp_ball_potted_consecutive
       resources :client_bugs
       resources :dynamic_iaps
       resources :club_configs

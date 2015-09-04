@@ -1,28 +1,52 @@
 - model_class = DynamicIap
 .page-header
-  h1=t '.title', :default => model_class.model_name.human.pluralize.titleize
-  = select_tag :iap_type, options_for_select(["Cue", "Coins", "Powerups", "Mini Games"], params[:iap_type]), {prompt: "Select a shop type", class: 'form-control filter-iap'}
+
+h1=t '.title', :default => model_class.model_name.human.pluralize.titleize
+
+= select_tag :iap_type, options_for_select(["Cue", "Coins", "Powerups", "Mini Games","SuperAim","Timer"], params[:iap_type]), {prompt: "Select a shop type", class: 'form-control filter-iap'}
+.col-md-9
+  .col-md-3= link_to "INR", dynamic_iaps_path(currency: "INR"), class: "btn btn-warning"
+  .col-md-3= link_to "USD", dynamic_iaps_path(currency: "USD"), class: "btn btn-warning"
+  .col-md-3= link_to "EUR", dynamic_iaps_path(currency: "EUR"), class: "btn btn-warning"
+
 table.table.table-striped
   thead
     tr
       th= model_class.human_attribute_name(:id)
       th= model_class.human_attribute_name(:iap_type)
+      th= model_class.human_attribute_name(:deal_value)
       th= model_class.human_attribute_name(:name)
       th= model_class.human_attribute_name(:iap_id)
       th= model_class.human_attribute_name(:old_value)
       th= model_class.human_attribute_name(:new_value)
+      th= model_class.human_attribute_name(:more)
+      th= model_class.human_attribute_name(:old_pricing)
+      th= model_class.human_attribute_name(:new_pricing)
       th= model_class.human_attribute_name(:offer)
+      th= model_class.human_attribute_name(:currency)
+      th= model_class.human_attribute_name(:country)
+      th= model_class.human_attribute_name(:is_active)
+      th= model_class.human_attribute_name(:end_time)
       th=t '.actions', :default => t("helpers.actions")
   tbody
     - @dynamic_iaps.each do |dynamic_iap|
       tr
         td= link_to dynamic_iap.id, dynamic_iap_path(dynamic_iap)
         td= dynamic_iap.iap_type
+        td= dynamic_iap.deal_value
         td= dynamic_iap.name
         td= dynamic_iap.iap_id
         td= dynamic_iap.old_value
         td= dynamic_iap.new_value
+        td= dynamic_iap.more
+        td= dynamic_iap.old_pricing
+        td= dynamic_iap.new_pricing
         td= dynamic_iap.offer
+        td= dynamic_iap.currency
+        td= dynamic_iap.country
+        td= dynamic_iap.is_active
+        td= dynamic_iap.end_time
+
         td
           = link_to t('.edit', :default => t("helpers.links.edit")), edit_dynamic_iap_path(dynamic_iap), :class => 'btn btn-default btn-xs'
           '

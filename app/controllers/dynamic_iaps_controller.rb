@@ -46,6 +46,8 @@ class DynamicIapsController < ApplicationController
     end
 
     def dynamic_iap_params
-      params.require(:dynamic_iap).permit(:iap_id, :old_value, :name, :new_value, :offer, :currency, :country, :iap_type)
+      params.require(:dynamic_iap).permit(:iap_id, :name,  :old_value, 
+        :new_value, :offer, :currency, :country, :iap_type, :created_at, :updated_at, 
+        :is_active, :old_pricing, :new_pricing, :deal_value, :more, :end_time)
     end
 end

@@ -1,6 +1,7 @@
 class ClubConfigSerializer < ActiveModel::Serializer
   attributes :id, 
              :name, 
+             :room_type, 
              :entry_fees, 
              :winner_amount,
              :bonus_amount,
