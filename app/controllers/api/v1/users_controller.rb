@@ -223,43 +223,52 @@ class Api::V1::UsersController < Api::V1::ApplicationController
 		render json: User.where(login_token:(params[:opponent_id])).first
 	end
 
-	def connect_facebook
-		@fb_user = User.where(fb_id: params[:fb_id]).first
-		if @fb_user.present?
-			if @fb_user.update_attributes(fb_id: nil, is_fb_connected: false, first_name: "Guest", last_name: "User")
-				@message = "Allready loged in user."
-				@login_token = @fb_user.login_token
-			else
-				@success = false,
-				@errors = @fb_user.errors.full_messages.join(", ")
-			end
-		end
-		if @user.update_attributes(fb_id: params[:fb_id], is_fb_connected: true, fb_friends_list: params[:fb_friends_list], first_name: params[:first_name], last_name: params[:last_name])
-			@success = true
-		else
-			@success = false,
-			@errors = @user.errors.full_messages.join(", ")
-		end
-		render json: {
-			success: @success,
-			message: @message,
-			login_token: @login_token,
-			errors: @errors
-		}
-	end
+	# def connect_facebook
+	# 	@fb_user = User.where(fb_id: params[:fb_id]).first
+	# 	if @fb_user.present?
+	# 		if @fb_user.update_attributes(fb_id: nil, is_fb_connected: false, first_name: "Guest", last_name: "User")
+	# 			@message = "Allready loged in user."
+	# 			@login_token = @fb_user.login_token
+	# 		else
+	# 			@success = false,
+	# 			@errors = @fb_user.errors.full_messages.join(", ")
+	# 		end
+	# 	end
+	# 	if @user.update_attributes(fb_id: params[:fb_id], is_fb_connected: true, fb_friends_list: params[:fb_friends_list], first_name: params[:first_name], last_name: params[:last_name])
+	# 		@success = true
+	# 	else
+	# 		@success = false,
+	# 		@errors = @user.errors.full_messages.join(", ")
+	# 	end
+	# 	render json: {
+	# 		success: @success,
+	# 		message: @message,
+	# 		login_token: @login_token,
+	# 		errors: @errors
+	# 	}
+	# end
 
-	def disconnect_facebook
-		if @user.update_attributes(is_fb_connected: false)
-			render json: {
-				success: true,
-				message: "Successfully disconneted from facebook."
-			}
-		else
-			render json: {
-				success: false,
-				errors: @user.errors.full_messages.join(", ")
-			}
-		end
+	# def disconnect_facebook
+	# 	if @user.update_attributes(is_fb_connected: false)
+	# 		render json: {
+	# 			success: true,
+	# 			message: "Successfully disconneted from facebook."
+	# 		}
+	# 	else
+	# 		render json: {
+	# 			success: false,
+	# 			errors: @user.errors.full_messages.join(", ")
+	# 		}
+	# 	end
+	# end
+
+	def proceed_session
+		@user = User.where("fb_id = ? OR device_id = ?", params[:id], params[:id]).first
+		render json: @user.as_json({
+			only: [ :id, :current_level, :xp, :login_token, :current_coins_balance, :unique_id,:device_id, :is_dummy, :device_avatar_id,
+				:won_count, :total_games_played, :total_tournament_won, :ball_potted, :total_tournament_played, :rank, :cue_owned, :is_fb_connected],
+      methods: [:full_name, :image_url, :xp_required_to_finish_level, :level_required_to_clear_rank]
+		})
 	end
 
 	def my_revenge_list

@@ -54,19 +54,14 @@ ActiveRecord::Schema.define(version: 20150902094722) do
 
   create_table "dynamic_iaps", force: true do |t|
     t.string   "iap_id"
-    t.decimal  "old_value",   precision: 10, scale: 0
-    t.decimal  "new_value",   precision: 10, scale: 0
+    t.decimal  "old_value",  precision: 10, scale: 0
+    t.decimal  "new_value",  precision: 10, scale: 0
     t.string   "offer"
     t.string   "currency"
     t.string   "country"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "iap_type"
     t.string   "name"
-    t.boolean  "is_active",                            default: true
-    t.decimal  "old_pricing", precision: 10, scale: 0
-    t.decimal  "new_pricing", precision: 10, scale: 0
-    t.string   "deal_value"
     t.integer  "more"
     t.integer  "end_time"
   end
@@ -178,6 +173,7 @@ ActiveRecord::Schema.define(version: 20150902094722) do
     t.string   "achievement"
     t.decimal  "current_coins_balance",              precision: 10, scale: 0, default: 1000
     t.boolean  "is_dummy",                                                    default: false
+    t.string   "device_avtar_id"
     t.decimal  "total_time_in_game",                 precision: 10, scale: 0, default: 0
     t.integer  "total_games_played",                                          default: 0
     t.binary   "flag"

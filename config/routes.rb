@@ -67,6 +67,7 @@ Rails.application.routes.draw do
           get :winner_list
           get :find_friend
           put :update_points
+          get :proceed_session
         end
       end
     end

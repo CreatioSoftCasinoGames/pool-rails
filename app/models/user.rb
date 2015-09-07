@@ -70,7 +70,7 @@ class User < ActiveRecord::Base
   end
 
   def level_required_to_clear_rank
-    LevelProgression.where(rank: rank).first.level
+    LevelProgression.where(rank: rank).first.try(:level)
   end
 
   def ask_for_challenge_in(friend_id)
