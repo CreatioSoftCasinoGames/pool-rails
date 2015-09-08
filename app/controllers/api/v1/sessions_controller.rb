@@ -32,7 +32,7 @@ class Api::V1::SessionsController < Api::V1::ApplicationController
 				end
 			else
 				p "--------------------------8---------------------------------"
-				@guest_user = User.where(device_id: params[:device_id]).first
+				@guest_user = User.where(device_id: params[:device_id], fb_id: params[:fb_id]).first
 				if @guest_user.present?
 					p "--------------------------9---------------------------------"
 					@success = true
@@ -41,6 +41,7 @@ class Api::V1::SessionsController < Api::V1::ApplicationController
 				else
 					@success = false
 					@new_user = false
+					@device_id = User.where(fb_id: params[:fb_id]).first.device_id
 					@message = "Progress already exists"
 				end
 			end
@@ -91,6 +92,7 @@ class Api::V1::SessionsController < Api::V1::ApplicationController
 			render json: {
 				success: @success,
 				errors: @message,
+				device_id: @device_id,
 				new_user: @new_user
 			}
 		end
