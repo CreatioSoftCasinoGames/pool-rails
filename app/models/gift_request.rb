@@ -32,6 +32,16 @@ class GiftRequest < ActiveRecord::Base
 		user.full_name
 	end
 
+	def sender_device_avatar_id
+		user.device_avatar_id
+	end
+
+	def receiver_device_avatar_id
+		if reciever.present?
+			reciever.device_avatar_id
+		end
+	end
+
 	def receiver_name
 		if reciever.present?
 			[reciever.first_name, reciever.last_name].join(" ")
@@ -106,7 +116,7 @@ class GiftRequest < ActiveRecord::Base
 	end
 
 	def publish_gift
-		REDIS_CLIENT.PUBLISH("gift_received", {id: id, request_type: "gift_received", login_token: user.login_token, send_to_token: send_token, sender_name: sender_name, receiver_name: receiver_name, full_name: full_name, gift_type: gift_type, gift_value: gift_value, confirmed: confirmed, image_url: image_url, device_avatar_id: device_avatar_id, sender_unique_id: sender_unique_id, receiver_unique_id: receiver_unique_id}.to_json)
+		REDIS_CLIENT.PUBLISH("gift_received", {id: id, request_type: "gift_received", login_token: user.login_token, send_to_token: send_token, sender_name: sender_name, receiver_name: receiver_name, sender_device_avatar_id: sender_device_avatar_id, receiver_device_avatar_id: receiver_device_avatar_id, full_name: full_name, gift_type: gift_type, gift_value: gift_value, confirmed: confirmed, image_url: image_url, device_avatar_id: device_avatar_id, sender_unique_id: sender_unique_id, receiver_unique_id: receiver_unique_id}.to_json)
 	end
 
 end
