@@ -60,8 +60,8 @@ class Api::V1::SessionsController < Api::V1::ApplicationController
 				@success = true
 				@user = @user
 			end
-		elsif params[:is_bot]
-			@user = User.create(first_name: params[:first_name], last_name: params[:last_name], is_bot: true)
+		elsif params[:is_dummy]
+			@user = User.create(first_name: params[:first_name], last_name: params[:last_name], is_dummy: true)
 			if @user.save
 				@success = true
 			else
